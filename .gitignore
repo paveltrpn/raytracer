@@ -1,0 +1,8 @@
+.idea
+.gradle
+gradlew
+gradlew.bat
+.kotlin
+build
+test_one/build
+modules/build
