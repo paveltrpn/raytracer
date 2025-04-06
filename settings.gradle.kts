@@ -8,3 +8,4 @@
 rootProject.name = "raytracer"
 include("modules")
 include("test_one")
+// project(path = "test_one").projectDir = file("apps/TestOne")
