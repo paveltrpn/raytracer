@@ -17,7 +17,21 @@ data class TgaHeader(val identsize: UByte,
                      val bits: UByte,
                      val descriptor: UByte)
 
+fun byteArrayToInt(byteArray: ByteArray): Int {
+    var result = 0
+    for (i in byteArray.indices) {
+        result = result or (byteArray[i].toInt() and 0xFF shl (8 * (byteArray.size - 1 - i)))
+    }
+    return result
+}
+
+fun toInt32(bytes: ByteArray, index: Int): Int {
+    require(bytes.size == 4) { "length must be 4, got: ${bytes.size}" }
+    return ByteBuffer.wrap(bytes, index, 4).order(ByteOrder.LITTLE_ENDIAN).int
+}
+
 class Tga(val path: String) {
+    private var data: ByteArray? = null
     private var width: Int = 0
     private var height: Int = 0
     private var bits: Int = 0
@@ -29,15 +43,17 @@ class Tga(val path: String) {
             val file = File(path)
 
             //
-            val bytes = file.readBytes()
+            data = file.readBytes()
 
-            println("${bytes.size} bytes readed")
+            println("${data?.size} bytes read")
 
-            // Get image parameters
-            imageType = bytes[2].toInt()
-            width = ByteBuffer.wrap(bytes, 12, 2).order(ByteOrder.LITTLE_ENDIAN).short.toInt()
-            height = ByteBuffer.wrap(bytes, 14, 2).order(ByteOrder.LITTLE_ENDIAN).short.toInt()
-            bits = bytes[16].toInt()
+            if (data != null) {
+                // Get image parameters
+                imageType = data!![2].toInt()
+                width = ByteBuffer.wrap(data, 12, 2).order(ByteOrder.LITTLE_ENDIAN).short.toInt()
+                height = ByteBuffer.wrap(data, 14, 2).order(ByteOrder.LITTLE_ENDIAN).short.toInt()
+                bits = data!![16].toInt()
+            }
 
             println("image type: $imageType; width: $width; height: $height; bits: $bits")
 
