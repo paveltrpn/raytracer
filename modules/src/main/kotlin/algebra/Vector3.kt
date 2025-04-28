@@ -11,13 +11,13 @@ class Vector3 {
         data = other.data
     }
 
-    constructor(x: Double = 0.0, y:  Double = 0.0, z: Double = 0.0) {
+    constructor(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0) {
         data[0] = x
         data[1] = y
         data[2] = z
     }
 
-    fun set(x: Double, y:  Double, z: Double) {
+    fun set(x: Double, y: Double, z: Double) {
         data[0] = x
         data[1] = y
         data[2] = z

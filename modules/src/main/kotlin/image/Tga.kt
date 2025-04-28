@@ -4,18 +4,22 @@ import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-data class TgaHeader(val identsize: UByte,
-                     val colorMapType : UByte,
-                     val imageType : UByte,
-                     val colorMapStart:  UShort,
-                     val colorMapLength:  UShort,
-                     val colorMapBits: UByte,
-                     val xstart:  UShort,
-                     val ystart:  UShort,
-                     val width:  UShort,
-                     val height:  UShort,
-                     val bits: UByte,
-                     val descriptor: UByte)
+import image.Bitmap
+
+data class TgaHeader(
+    val identsize: UByte,
+    val colorMapType: UByte,
+    val imageType: UByte,
+    val colorMapStart: UShort,
+    val colorMapLength: UShort,
+    val colorMapBits: UByte,
+    val xstart: UShort,
+    val ystart: UShort,
+    val width: UShort,
+    val height: UShort,
+    val bits: UByte,
+    val descriptor: UByte
+)
 
 fun byteArrayToInt(byteArray: ByteArray): Int {
     var result = 0
@@ -60,5 +64,9 @@ class Tga(val path: String) {
         } catch (e: Exception) {
             println("exception is: ${e.message}")
         }
+    }
+
+    fun write(path: String, bmap: Bitmap) {
+        
     }
 }
