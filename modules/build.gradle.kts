@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.1.10"
+    kotlin("jvm") version "2.2.0"
 }
 
 repositories {
@@ -15,7 +15,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(23)
 
     compilerOptions {
         // optIn.add("kotlin.RequiresOptIn")
