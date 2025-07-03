@@ -13,7 +13,7 @@ PROJECT_NAME=dummy_one
 shopt -s nullglob
 
 # ========= define sources ====================
-DUMMY_ONE_SOURCE=(
+PROJECT_SOURCE=(
   dummy_one/src/main/kotlin/dummy_one/*.kt
 )
 
@@ -39,7 +39,7 @@ cleanBuildArtifacts() {
     echo -e "=== clean ==="
 
     if [[ -d "$BUILD_ARTIFACTS_DIR" ]]; then
-      rm -r $BUILD_ARTIFACTS_DIR
+      rm -r $BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar
     fi
 }
 
@@ -56,7 +56,7 @@ build() {
     echo -e "kotlin version=$KOTLIN_VERSION\n"
 
     echo -e "dummy_one sources:"
-    for item in "${DUMMY_ONE_SOURCE[@]}"
+    for item in "${PROJECT_SOURCE[@]}"
     do
       echo "$item"
     done
@@ -75,7 +75,7 @@ build() {
         -language-version $KOTLIN_VERSION \
         -include-runtime \
         $KOTLIN_VERBOSE \
-        "${DUMMY_ONE_SOURCE[@]}" \
+        "${PROJECT_SOURCE[@]}" \
         "${MODULE_PKG_SOURCE[@]}" \
         -d $BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar
 }
