@@ -3,11 +3,12 @@
 BUILD_ARTIFACTS_DIR="out"
 JVM_TARGET=21
 KOTLIN_VERSION="2.2"
+KOTLIN_VERBOSE=
+# KOTLIN_VERBOSE=-verbose
 
 shopt -s nullglob
 
-# ==============================================
-# === define sources
+# ========= define sources ====================
 DUMMY_ONE_SOURCE=(
   dummy_one/src/main/kotlin/dummy_one/*.kt
 )
@@ -19,8 +20,16 @@ MODULE_PKG_SOURCE=(
   modules/src/main/kotlin/film/*.kt
   modules/src/main/kotlin/spatial/*.kt
 )
-
 # ==============================================
+
+help() {
+  echo -e "Options:"
+  echo -e "\t-b --build: Build project, place *.class or *.jar files in out."
+  echo -e "\t-r --run: Run project from *.class or *.jar files."
+  echo -e "\t-a --all: Build and run."
+  echo -e "\t-c --clean: Clean all build artifacts, completely delete out directory."
+  echo -e "\tSet KOTLIN_VERBOSE in script source to use verbose kotlin compiler output."
+}
 
 cleanBuildArtifacts() {
     echo -e "=== clean ==="
@@ -48,9 +57,10 @@ build() {
         -jvm-target $JVM_TARGET \
         -language-version $KOTLIN_VERSION \
         -include-runtime \
+        $KOTLIN_VERBOSE \
         "${DUMMY_ONE_SOURCE[@]}" \
         "${MODULE_PKG_SOURCE[@]}" \
-        -d $BUILD_ARTIFACTS_DIR/dummy_one.jar -verbose
+        -d $BUILD_ARTIFACTS_DIR/dummy_one.jar
 }
 
 run() {
@@ -64,7 +74,7 @@ run() {
     java -cp $BUILD_ARTIFACTS_DIR/dummy_one.jar dummy_one.MainKt
 }
 
-getopts ':-:brac' VAL
+getopts ':-:brach' VAL
   case $VAL in
     b )
       checkBuildDir
@@ -85,6 +95,10 @@ getopts ':-:brac' VAL
       cleanBuildArtifacts
       exit
       ;;
+    h )
+      help
+      exit
+      ;;
     - )
       case $OPTARG in
         build )
@@ -103,6 +117,10 @@ getopts ':-:brac' VAL
           ;;
         clean )
           cleanBuildArtifacts
+          exit
+          ;;
+        help )
+          help
           exit
           ;;
         * )
