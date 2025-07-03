@@ -1,4 +1,4 @@
-package test_one
+package dummy_one
 
 import algebra.Vector3
 import image.Tga

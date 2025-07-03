@@ -4,7 +4,8 @@ gradlew
 gradlew.bat
 .kotlin
 build
-test_one/build
-test_one/resources/*
-!test_one/resources/.gitkeep
+dummy_one/build
+dummy_one/resources/*
+!dummy_one/resources/.gitkeep
 modules/build
+out/*
