@@ -1,10 +1,13 @@
 #!/bin/bash
 
 BUILD_ARTIFACTS_DIR="out"
-JVM_TARGET=21
-KOTLIN_VERSION="2.2"
-KOTLIN_VERBOSE=
+
+# ========= kotlin compiler options sources ====================
+KOTLIN_JVM_TARGET=21
+KOTLIN_LANGUAGE_VERSION=2.2
+KOTLIN_API_VERSION=2.2
 # KOTLIN_VERBOSE=-verbose
+# ==============================================================
 
 PROJECT_NAME=encode
 
@@ -34,7 +37,7 @@ help() {
 }
 
 cleanBuildArtifacts() {
-    echo -e "=== clean ==="
+    echo -e "=== clean $PROJECT_NAME ==="
 
     if [[ -d "$BUILD_ARTIFACTS_DIR" ]]; then
       rm -r $BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar
@@ -50,8 +53,9 @@ checkBuildDir() {
 
 build() {
     echo -e "=== build $PROJECT_NAME ===\n"
-    echo -e "jvm target=$JVM_TARGET"
-    echo -e "kotlin version=$KOTLIN_VERSION\n"
+    echo -e "kotlin jvm target=$KOTLIN_JVM_TARGET"
+    echo -e "kotlin compiler version=$KOTLIN_LANGUAGE_VERSION"
+    echo -e "kotlin api version=$KOTLIN_API_VERSION\n"
 
     echo -e "dummy_one sources:"
     for item in "${PROJECT_SOURCE[@]}"
@@ -69,8 +73,9 @@ build() {
 
     echo -e "=== compile $PROJECT_NAME ===\n"
     kotlinc \
-        -jvm-target $JVM_TARGET \
-        -language-version $KOTLIN_VERSION \
+        -jvm-target $KOTLIN_JVM_TARGET \
+        -language-version $KOTLIN_LANGUAGE_VERSION \
+        -api-version $KOTLIN_API_VERSION \
         -include-runtime \
         $KOTLIN_VERBOSE \
         "${PROJECT_SOURCE[@]}" \
