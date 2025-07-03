@@ -69,7 +69,7 @@ build() {
     done
     echo ""
 
-    echo -e "=== compile ===\n"
+    echo -e "=== compile $PROJECT_NAME ===\n"
     kotlinc \
         -jvm-target $JVM_TARGET \
         -language-version $KOTLIN_VERSION \
