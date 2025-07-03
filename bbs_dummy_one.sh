@@ -50,9 +50,22 @@ build() {
     echo -e "=== build ===\n"
     echo -e "jvm target=$JVM_TARGET"
     echo -e "kotlin version=$KOTLIN_VERSION\n"
-    echo -e "dummy_one sources: ${DUMMY_ONE_SOURCE[@]} \n"
-    echo -e "module sources: ${MODULE_PKG_SOURCE[@]} \n"
 
+    echo -e "dummy_one sources:"
+    for item in "${DUMMY_ONE_SOURCE[@]}"
+    do
+      echo "$item"
+    done
+    echo ""
+
+    echo -e "module sources:"
+    for item in "${MODULE_PKG_SOURCE[@]}"
+    do
+      echo "$item"
+    done
+    echo ""
+
+    echo -e "=== compile ===\n"
     kotlinc \
         -jvm-target $JVM_TARGET \
         -language-version $KOTLIN_VERSION \
