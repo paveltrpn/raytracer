@@ -6,15 +6,13 @@ KOTLIN_VERSION="2.2"
 KOTLIN_VERBOSE=
 # KOTLIN_VERBOSE=-verbose
 
-# ========= project name ======================
-PROJECT_NAME=dummy_one
-# ==============================================
+PROJECT_NAME=encode
 
 shopt -s nullglob
 
 # ========= define sources ====================
 DUMMY_ONE_SOURCE=(
-  dummy_one/src/main/kotlin/dummy_one/*.kt
+  encode/src/main/kotlin/*.kt
 )
 
 MODULE_PKG_SOURCE=(

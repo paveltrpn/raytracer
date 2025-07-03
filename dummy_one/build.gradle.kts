@@ -25,5 +25,5 @@ tasks.test {
 //}
 
 application {
-    mainClass = "test_one.MainKt"
+    mainClass = "dummy_one.MainKt"
 }
