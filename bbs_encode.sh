@@ -87,6 +87,9 @@ build() {
     DEPENDENCIES=(
       "$DEP/clikt-jvm-5.0.3.jar"
       "$DEP/okio-jvm-3.15.0.jar"
+      "$DEP/kotlinx-coroutines-core-jvm-1.10.2.jar"
+      "$DEP/kotlinx-serialization-core-jvm-1.9.0.jar"
+      "$DEP/kotlinx-serialization-json-jvm-1.9.0.jar"
     )
     # create a space delimited string from array
     TMP=${DEPENDENCIES[*]}
@@ -116,6 +119,9 @@ run() {
     RUNTIME=(
       "$DEP/clikt-jvm-5.0.3.jar"
       "$DEP/okio-jvm-3.15.0.jar"
+      "$DEP/kotlinx-coroutines-core-jvm-1.10.2.jar"
+      "$DEP/kotlinx-serialization-core-jvm-1.9.0.jar"
+      "$DEP/kotlinx-serialization-json-jvm-1.9.0.jar"
       "$OUT/$PROJECT.jar"
     )
     TMP=${RUNTIME[*]}
