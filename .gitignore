@@ -5,10 +5,6 @@ gradlew.bat
 .kotlin
 build
 
-dummy_one/build
-dummy_one/resources/*
-!dummy_one/resources/.gitkeep
-
 encode/build
 
 modules/build
@@ -17,4 +13,5 @@ out/*
 !out/.gitkeep
 
 dep/*
+!dep/*.jar
 !dep/.gitkeep

@@ -8,8 +8,8 @@ repositories {
 }
 
 dependencies {
-    // implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk21")
     testImplementation(kotlin("test"))
+    implementation("com.squareup.okio:okio:3.15.0")
 }
 
 tasks.test {
