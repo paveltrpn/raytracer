@@ -2,7 +2,7 @@
 
 BUILD_ARTIFACTS_DIR="out"
 
-# ========= kotlin compiler options sources ====================
+# ========= kotlin compiler options ============================
 KOTLIN_JVM_TARGET=21
 KOTLIN_LANGUAGE_VERSION=2.2
 KOTLIN_API_VERSION=2.2
@@ -13,7 +13,7 @@ PROJECT_NAME=encode
 
 shopt -s nullglob
 
-# ========= define sources ====================
+# ========= define sources =====================================
 PROJECT_SOURCE=(
   encode/src/main/kotlin/*.kt
 )
@@ -25,7 +25,32 @@ MODULE_PKG_SOURCE=(
   modules/src/main/kotlin/film/*.kt
   modules/src/main/kotlin/spatial/*.kt
 )
-# ==============================================
+# ==============================================================
+
+# ========= test environment and set executables ===============
+JAVA_BIN="java"
+if [[ -n "$JAVA_HOME" ]]; then
+    JAVA_BIN="$JAVA_HOME/bin/java"
+    if [[ ! -x "$JAVA_BIN" ]]; then
+        echo >&2 -e "'java' should be on the PATH or JAVA_HOME must point to a valid JDK installation"
+        exit 1
+    fi
+fi
+
+# Check all PATH
+# ${PATH//:/ }; - replace colins with spaces to create a list.
+for d in ${PATH//:/ }; do
+  if [[ -x "$d/kotlinc" ]]; then
+    KOTLIN_COMPILER_BIN="$d/kotlinc"
+    break;
+  fi
+done
+
+if [[ -z "$KOTLIN_COMPILER_BIN" ]]; then
+    echo >&2 -e "'kotlinc' should be on the PATH."
+    exit 1
+fi
+# ==============================================================
 
 help() {
   echo -e "Options:"
@@ -72,7 +97,7 @@ build() {
     echo ""
 
     echo -e "=== compile $PROJECT_NAME ===\n"
-    kotlinc \
+    "$KOTLIN_COMPILER_BIN" \
         -jvm-target $KOTLIN_JVM_TARGET \
         -language-version $KOTLIN_LANGUAGE_VERSION \
         -api-version $KOTLIN_API_VERSION \
@@ -91,7 +116,7 @@ run() {
       exit
     fi
 
-    java -cp $BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar $PROJECT_NAME.MainKt
+    "$JAVA_BIN" -cp $BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar $PROJECT_NAME.MainKt
 }
 
 getopts ':-:brach' VAL
