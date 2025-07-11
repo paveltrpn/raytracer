@@ -38,7 +38,7 @@ if [[ -n "$JAVA_HOME" ]]; then
 fi
 
 # Check all PATH
-# ${PATH//:/ }; - replace colins with spaces to create a list.
+# ${PATH//:/ }; - replace colons with spaces to create a list.
 for d in ${PATH//:/ }; do
   if [[ -x "$d/kotlinc" ]]; then
     KOTLIN_COMPILER_BIN="$d/kotlinc"

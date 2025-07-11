@@ -14,3 +14,7 @@ encode/build
 modules/build
 
 out/*
+!out/.gitkeep
+
+dep/*
+!dep/.gitkeep
