@@ -85,7 +85,7 @@ build() {
     # echo ""
 
     DEPENDENCIES=(
-      "$DEP/okio-3.15.0.jar"
+      "$DEP/clikt-jvm-5.0.3.jar"
       "$DEP/okio-jvm-3.15.0.jar"
     )
     # create a space delimited string from array
@@ -114,6 +114,7 @@ run() {
     fi
 
     RUNTIME=(
+      "$DEP/clikt-jvm-5.0.3.jar"
       "$DEP/okio-jvm-3.15.0.jar"
       "$OUT/$PROJECT.jar"
     )
