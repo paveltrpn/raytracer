@@ -28,7 +28,7 @@ MODULE_PKG_SOURCE=(
 )
 
 DEP_OKIO=(
-  "$DEPS_DIR/okio-3.15.0.jar:$DEPS_DIR/okio-3.15.0-sources.jar:$DEPS_DIR/okio-jvm-3.15.0.jar"
+  "$DEPS_DIR/okio-3.15.0.jar:$DEPS_DIR/okio-jvm-3.15.0.jar"
 )
 # ==============================================================
 
@@ -87,26 +87,19 @@ build() {
     echo -e "kotlin compiler version=$KOTLIN_LANGUAGE_VERSION"
     echo -e "kotlin api version=$KOTLIN_API_VERSION\n"
 
-    echo -e "$PROJECT_NAME sources:"
-    for item in "${PROJECT_SOURCE[@]}"
-    do
-      echo "$item"
-    done
-    echo ""
+    # echo -e "$PROJECT_NAME sources:"
+    # for item in "${PROJECT_SOURCE[@]}"
+    # do
+    #   echo "$item"
+    # done
+    # echo ""
 
-    echo -e "module sources:"
-    for item in "${MODULE_PKG_SOURCE[@]}"
-    do
-      echo "$item"
-    done
-    echo ""
-
-    echo -e "dependencies:"
-    for item in "${DEPENDENCIES[@]}"
-    do
-      echo "$item"
-    done
-    echo ""
+    # echo -e "module sources:"
+    # for item in "${MODULE_PKG_SOURCE[@]}"
+    # do
+    #   echo "$item"
+    # done
+    # echo ""
 
     echo -e "=== compile $PROJECT_NAME ===\n"
     "$KOTLIN_COMPILER_BIN" \
