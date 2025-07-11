@@ -122,7 +122,17 @@ run() {
       exit
     fi
 
-    "$JAVA_BIN" -cp $DEPS_DIR/okio-jvm-3.15.0.jar:$BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar $PROJECT_NAME.MainKt
+    RUNTIME=(
+      "$DEPS_DIR/okio-jvm-3.15.0.jar"
+      "$BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar"
+    )
+    # create a space delimited string from array
+    TMP=${RUNTIME[*]}
+    # use parameter expansion to substitute spaces with comma
+    CP=${TMP// /:}
+
+    "$JAVA_BIN" -cp "${CP// /:}" \
+        $PROJECT_NAME.MainKt
 }
 
 getopts ':-:brach' VAL
