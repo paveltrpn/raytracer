@@ -1,35 +1,12 @@
 #!/bin/bash
 
-BUILD_ARTIFACTS_DIR="out"
-DEPS_DIR="dep"
+shopt -s nullglob
 
 # ========= kotlin compiler options ============================
 KOTLIN_JVM_TARGET=21
 KOTLIN_LANGUAGE_VERSION=2.2
 KOTLIN_API_VERSION=2.2
 #KOTLIN_VERBOSE=-verbose
-# ==============================================================
-
-PROJECT_NAME=encode
-
-shopt -s nullglob
-
-# ========= define sources =====================================
-PROJECT_SOURCE=(
-  encode/src/main/kotlin/*.kt
-)
-
-MODULE_PKG_SOURCE=(
-  modules/src/main/kotlin/algebra/*.kt
-  modules/src/main/kotlin/canvas/*.kt
-  modules/src/main/kotlin/image/*.kt
-  modules/src/main/kotlin/film/*.kt
-  modules/src/main/kotlin/spatial/*.kt
-)
-
-DEP_OKIO=(
-  "$DEPS_DIR/okio-3.15.0.jar:$DEPS_DIR/okio-jvm-3.15.0.jar"
-)
 # ==============================================================
 
 # ========= test environment and set executables ===============
@@ -57,6 +34,10 @@ if [[ -z "$KOTLIN_COMPILER_BIN" ]]; then
 fi
 # ==============================================================
 
+PROJECT=encode
+OUT="out"
+DEP="dep"
+
 help() {
   echo -e "Options:"
   echo -e "\t-b --build: Build project, place *.class or *.jar files in out."
@@ -67,72 +48,80 @@ help() {
 }
 
 cleanBuildArtifacts() {
-    echo -e "=== clean $PROJECT_NAME ==="
+    echo -e "=== clean $PROJECT ==="
 
-    if [[ -d "$BUILD_ARTIFACTS_DIR" ]]; then
-      rm -r $BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar
+    if [[ -d "$OUT" ]]; then
+      rm -r $OUT/$PROJECT.jar
     fi
 }
 
 checkBuildDir() {
-  if [[ ! -d "$BUILD_ARTIFACTS_DIR" ]]; then
-    echo -e "=== $BUILD_ARTIFACTS_DIR does not exist. Create one ===\n"
-    mkdir $BUILD_ARTIFACTS_DIR
+  if [[ ! -d "$OUT" ]]; then
+    echo -e "=== $OUT does not exist. Create one ===\n"
+    mkdir $OUT
   fi
 }
 
 build() {
-    echo -e "=== build $PROJECT_NAME ===\n"
+    echo -e "=== build $PROJECT ===\n"
     echo -e "kotlin jvm target=$KOTLIN_JVM_TARGET"
     echo -e "kotlin compiler version=$KOTLIN_LANGUAGE_VERSION"
     echo -e "kotlin api version=$KOTLIN_API_VERSION\n"
 
-    # echo -e "$PROJECT_NAME sources:"
-    # for item in "${PROJECT_SOURCE[@]}"
+    SOURCES=(
+      encode/src/main/kotlin/*.kt
+      modules/src/main/kotlin/algebra/*.kt
+      modules/src/main/kotlin/canvas/*.kt
+      modules/src/main/kotlin/image/*.kt
+      modules/src/main/kotlin/film/*.kt
+      modules/src/main/kotlin/spatial/*.kt
+    )
+
+    # echo -e "$PROJECT sources:"
+    # for item in "${SOURCES[@]}"
     # do
     #   echo "$item"
     # done
     # echo ""
 
-    # echo -e "module sources:"
-    # for item in "${MODULE_PKG_SOURCE[@]}"
-    # do
-    #   echo "$item"
-    # done
-    # echo ""
+    DEPENDENCIES=(
+      "$DEP/okio-3.15.0.jar"
+      "$DEP/okio-jvm-3.15.0.jar"
+    )
+    # create a space delimited string from array
+    TMP=${DEPENDENCIES[*]}
+    # use parameter expansion to substitute spaces with comma
+    CP=${TMP// /:}
 
-    echo -e "=== compile $PROJECT_NAME ===\n"
+    echo -e "=== compile $PROJECT ===\n"
     "$KOTLIN_COMPILER_BIN" \
         -jvm-target $KOTLIN_JVM_TARGET \
         -language-version $KOTLIN_LANGUAGE_VERSION \
         -api-version $KOTLIN_API_VERSION \
         -include-runtime \
         $KOTLIN_VERBOSE \
-        "${PROJECT_SOURCE[@]}" \
-        "${MODULE_PKG_SOURCE[@]}" \
-        -classpath "$DEP_OKIO" \
-        -d $BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar
+        "${SOURCES[@]}" \
+        -cp "$CP" \
+        -d $OUT/$PROJECT.jar
 }
 
 run() {
-    echo -e "=== run $PROJECT_NAME ===\n"
+    echo -e "=== run $PROJECT ===\n"
 
-    if [[ ! -d "$BUILD_ARTIFACTS_DIR" ]]; then
-      echo -e "=== $BUILD_ARTIFACTS_DIR does not exist. nothing to run ===\n"
+    if [[ ! -d "$OUT" ]]; then
+      echo -e "=== $OUT does not exist. nothing to run ===\n"
       exit
     fi
 
     RUNTIME=(
-      "$DEPS_DIR/okio-jvm-3.15.0.jar"
-      "$BUILD_ARTIFACTS_DIR/$PROJECT_NAME.jar"
+      "$DEP/okio-jvm-3.15.0.jar"
+      "$OUT/$PROJECT.jar"
     )
-    # create a space delimited string from array
     TMP=${RUNTIME[*]}
-    # use parameter expansion to substitute spaces with comma
     CP=${TMP// /:}
 
     "$JAVA_BIN" -cp "${CP// /:}" \
-        $PROJECT_NAME.MainKt
+        $PROJECT.MainKt
 }
 
 getopts ':-:brach' VAL
