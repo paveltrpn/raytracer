@@ -7,6 +7,7 @@
 
 rootProject.name = "raytracer"
 include("modules")
+include("tire")
 include("encode")
 include("dummy_one")
 // project(path = "test_one").projectDir = file("apps/TestOne")
