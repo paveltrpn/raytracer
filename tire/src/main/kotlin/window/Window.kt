@@ -2,13 +2,13 @@ package window
 
 import org.lwjgl.glfw.*
 import org.lwjgl.glfw.GLFW.*
-import org.lwjgl.opengl.*
-import org.lwjgl.system.*
+import org.lwjgl.opengl.GL
+import org.lwjgl.opengl.GL46.*
+import org.lwjgl.system.MemoryUtil.*
+import java.nio.IntBuffer
+import java.util.function.IntFunction
 import org.lwjgl.system.MemoryStack.*
 import org.lwjgl.system.MemoryUtil.*
-import java.util.*
-import java.util.function.IntFunction
-
 
 class Window {
     private var allocator: GLFWAllocator? = null
@@ -35,9 +35,10 @@ class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE)
         glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE)
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE)
-        if (glfwGetPlatform() === GLFW_PLATFORM_COCOA) {
-            glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE)
-        }
+
+        // Set latest OpenGL version context.
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4)
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6)
 
         val WIDTH = 300
         val HEIGHT = 300
@@ -60,6 +61,26 @@ class Window {
             (vidmode.height() - HEIGHT) / 2
         )
 
+
+        // STACK MEMORY USAGE EXAMPLE
+//        stackPush().use { stack ->
+//            val pWidth: IntBuffer = stack.mallocInt(1) // int*
+//            val pHeight: IntBuffer = stack.mallocInt(1) // int*
+//
+//            // Get the window size passed to glfwCreateWindow
+//            glfwGetWindowSize(window, pWidth, pHeight)
+//
+//            // Get the resolution of the primary monitor
+//            val vidmode: GLFWVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor())!!
+//
+//            // Center the window
+//            glfwSetWindowPos(
+//                window,
+//                (vidmode.width() - pWidth.get(0)) / 2,
+//                (vidmode.height() - pHeight.get(0)) / 2
+//            )
+//        }
+
 //        glfwSetFramebufferSizeCallback(window, this::framebufferSizeChanged)
 
 //        glfwSetWindowRefreshCallback(window, { windowHnd ->
@@ -73,6 +94,13 @@ class Window {
 //        debugProc = GLUtil.setupDebugMessageCallback()
 
 
+        glfwSetKeyCallback(window, { window, key, scancode, action, mods ->
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(
+                window,
+                true
+            ) // We will detect this in the rendering loop
+        })
+
         glfwSwapInterval(1)
         glfwShowWindow(window)
 
@@ -80,10 +108,15 @@ class Window {
     }
 
     fun loop() {
-        var lastUpdate = System.currentTimeMillis()
+//        var lastUpdate = System.currentTimeMillis()
+
+        glClearColor(1.0F, 1.0F, 1.0F, 1.0F)
 
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents()
+
+            glViewport(0, 0, 300, 300)
+            glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
             glfwSwapBuffers(window)
         }
