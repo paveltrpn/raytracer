@@ -1,6 +1,6 @@
 import * as alg from "./algebra/algebra.js"
-import { glProgram_c } from "./shaders.js"
-import * as gmtry from "./geometry.js"
+import { glProgram_c } from "./render/shaders.js"
+import * as gmtry from "./render/geometry.js"
 
 let gl_vert_buf
 let gl_normal_buf

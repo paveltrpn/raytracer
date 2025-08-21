@@ -24,7 +24,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/basic", http.HandlerFunc(handleBasic))
 
-	fs := http.FileServer(http.Dir("../app"))
+	fs := http.FileServer(http.Dir("../tire"))
 	mux.Handle("/", fs)
 
 	port := 8081
