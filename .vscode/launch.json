@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "test/window/vk_test",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/test/window/vk_test",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "LD_LIBRARY_PATH": "{$LD_LIBRARY_PATH}:/usr/local/lib/x86_64-unknown-linux-gnu",
+            },
+        },
+        {
+            "name": "test/window/gl_test",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/test/window/gl_test",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "LD_LIBRARY_PATH": "{$LD_LIBRARY_PATH}:/usr/local/lib/x86_64-unknown-linux-gnu",
+            },
+        },
+    ]
+}
