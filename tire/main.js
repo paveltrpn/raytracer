@@ -63,7 +63,7 @@ async function initWGLState(state) {
 
 	prog = new glProgram_c(gl)
 
-	await prog.initShaderProgram("vert.glsl", "frag.glsl")
+	await prog.initShaderProgram("shaders/vert.glsl", "shaders/frag.glsl")
 
 	box = new gmtry.gmtryInstance_c()
 	box.dummyInit()
