@@ -1,5 +1,6 @@
 import * as vec3 from "./vec3.js";
 import { fEPS } from "./common.js";
+
 export class qtnn {
     data;
     order = 4;
@@ -8,8 +9,7 @@ export class qtnn {
         if (x instanceof qtnn) {
             this.data = new Float32Array(this.order);
             this.fromQtnn(x);
-        }
-        else {
+        } else {
             this.data = new Float32Array(this.order);
             this.data[0] = x || 0.0;
             this.data[1] = y || 0.0;
@@ -26,10 +26,12 @@ export class qtnn {
     }
 
     lenght() {
-        return Math.sqrt(this.data[0] * this.data[0] +
-            this.data[1] * this.data[1] +
-            this.data[2] * this.data[2] +
-            this.data[3] * this.data[3]);
+        return Math.sqrt(
+            this.data[0] * this.data[0] +
+                this.data[1] * this.data[1] +
+                this.data[2] * this.data[2] +
+                this.data[3] * this.data[3]
+        );
     }
 
     normalize() {
@@ -90,18 +92,36 @@ export class qtnn {
 }
 
 function qtnnDot(a, b) {
-    return a.data[0] * b.data[0] +
+    return (
+        a.data[0] * b.data[0] +
         a.data[1] * b.data[1] +
         a.data[2] * b.data[2] +
-        a.data[3] * b.data[3];
+        a.data[3] * b.data[3]
+    );
 }
 
 function qtnnMult(a, b) {
-    let rt = new qtnn;
-    rt.data[3] = a.data[3] * b.data[3] - a.data[0] * b.data[0] - a.data[1] * b.data[1] - a.data[2] * b.data[2];
-    rt.data[0] = a.data[3] * b.data[0] + a.data[0] * b.data[3] + a.data[1] * b.data[2] - a.data[2] * b.data[1];
-    rt.data[1] = a.data[3] * b.data[1] - a.data[0] * b.data[2] + a.data[1] * b.data[3] + a.data[2] * b.data[0];
-    rt.data[2] = a.data[3] * b.data[2] + a.data[0] * b.data[1] - a.data[1] * b.data[0] + a.data[2] * b.data[3];
+    let rt = new qtnn();
+    rt.data[3] =
+        a.data[3] * b.data[3] -
+        a.data[0] * b.data[0] -
+        a.data[1] * b.data[1] -
+        a.data[2] * b.data[2];
+    rt.data[0] =
+        a.data[3] * b.data[0] +
+        a.data[0] * b.data[3] +
+        a.data[1] * b.data[2] -
+        a.data[2] * b.data[1];
+    rt.data[1] =
+        a.data[3] * b.data[1] -
+        a.data[0] * b.data[2] +
+        a.data[1] * b.data[3] +
+        a.data[2] * b.data[0];
+    rt.data[2] =
+        a.data[3] * b.data[2] +
+        a.data[0] * b.data[1] -
+        a.data[1] * b.data[0] +
+        a.data[2] * b.data[3];
     return rt;
 }
 
@@ -116,20 +136,18 @@ function qtnnSlerp(from, to, t) {
         p1[1] = -to.data[1];
         p1[2] = -to.data[2];
         p1[3] = -to.data[3];
-    }
-    else {
+    } else {
         p1[0] = to.data[0];
         p1[1] = to.data[1];
         p1[2] = to.data[2];
         p1[3] = to.data[3];
     }
-    if ((1.0 - cosom) > fEPS) {
+    if (1.0 - cosom > fEPS) {
         omega = Math.acos(cosom);
         sinom = Math.sin(omega);
         scale0 = Math.sin((1.0 - t) * omega) / sinom;
         scale1 = Math.sin(t * omega) / sinom;
-    }
-    else {
+    } else {
         scale0 = 1.0 - t;
         scale1 = t;
     }

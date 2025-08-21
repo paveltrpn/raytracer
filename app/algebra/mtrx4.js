@@ -4,23 +4,20 @@ export class mtrx4 {
     data;
     order = 4;
     constructor(src) {
-        if ((src) || (src instanceof mtrx4)) {
+        if (src || src instanceof mtrx4) {
             this.data = new Float32Array(16);
             this.fromMtrx4(src);
-        }
-        else if ((src) || (src instanceof Float32Array)) {
+        } else if (src || src instanceof Float32Array) {
             this.data = new Float32Array(16);
             this.fromArray(src);
-        }
-        else {
+        } else {
             let i, j;
             this.data = new Float32Array(16);
             for (i = 0; i < this.order; i++) {
                 for (j = 0; j < this.order; j++) {
                     if (i == j) {
                         this.data[idRw(i, j, this.order)] = 1.0;
-                    }
-                    else {
+                    } else {
                         this.data[idRw(i, j, this.order)] = 0.0;
                     }
                 }
@@ -33,8 +30,7 @@ export class mtrx4 {
             for (j = 0; j < this.order; j++) {
                 if (i == j) {
                     this.data[idRw(i, j, this.order)] = 1.0;
-                }
-                else {
+                } else {
                     this.data[idRw(i, j, this.order)] = 0.0;
                 }
             }
@@ -88,9 +84,12 @@ export class mtrx4 {
             for (j = 0; j < this.order; j++) {
                 tmp = 0.0;
                 for (k = 0; k < this.order; k++) {
-                    tmp = tmp + this.data[(idRw(k, j, this.order))] * a.data[(idRw(i, k, this.order))];
+                    tmp =
+                        tmp +
+                        this.data[idRw(k, j, this.order)] *
+                            a.data[idRw(i, k, this.order)];
                 }
-                rt.data[(idRw(i, j, this.order))] = tmp;
+                rt.data[idRw(i, j, this.order)] = tmp;
             }
         }
         this.fromMtrx4(rt);
@@ -116,8 +115,7 @@ export class mtrx4 {
             nf = 1 / (near - far);
             this.data[10] = (far + near) * nf;
             this.data[14] = 2 * far * near * nf;
-        }
-        else {
+        } else {
             this.data[10] = -1;
             this.data[14] = -2 * near;
         }
@@ -131,113 +129,132 @@ export class mtrx4 {
     invert() {
         let inv = new mtrx4();
         let i, det;
-        inv.data[0] = this.data[5] * this.data[10] * this.data[15] -
+        inv.data[0] =
+            this.data[5] * this.data[10] * this.data[15] -
             this.data[5] * this.data[11] * this.data[14] -
             this.data[9] * this.data[6] * this.data[15] +
             this.data[9] * this.data[7] * this.data[14] +
             this.data[13] * this.data[6] * this.data[11] -
             this.data[13] * this.data[7] * this.data[10];
-        inv.data[4] = -this.data[4] * this.data[10] * this.data[15] +
+        inv.data[4] =
+            -this.data[4] * this.data[10] * this.data[15] +
             this.data[4] * this.data[11] * this.data[14] +
             this.data[8] * this.data[6] * this.data[15] -
             this.data[8] * this.data[7] * this.data[14] -
             this.data[12] * this.data[6] * this.data[11] +
             this.data[12] * this.data[7] * this.data[10];
-        inv.data[8] = this.data[4] * this.data[9] * this.data[15] -
+        inv.data[8] =
+            this.data[4] * this.data[9] * this.data[15] -
             this.data[4] * this.data[11] * this.data[13] -
             this.data[8] * this.data[5] * this.data[15] +
             this.data[8] * this.data[7] * this.data[13] +
             this.data[12] * this.data[5] * this.data[11] -
             this.data[12] * this.data[7] * this.data[9];
-        inv.data[12] = -this.data[4] * this.data[9] * this.data[14] +
+        inv.data[12] =
+            -this.data[4] * this.data[9] * this.data[14] +
             this.data[4] * this.data[10] * this.data[13] +
             this.data[8] * this.data[5] * this.data[14] -
             this.data[8] * this.data[6] * this.data[13] -
             this.data[12] * this.data[5] * this.data[10] +
             this.data[12] * this.data[6] * this.data[9];
-        inv.data[1] = -this.data[1] * this.data[10] * this.data[15] +
+        inv.data[1] =
+            -this.data[1] * this.data[10] * this.data[15] +
             this.data[1] * this.data[11] * this.data[14] +
             this.data[9] * this.data[2] * this.data[15] -
             this.data[9] * this.data[3] * this.data[14] -
             this.data[13] * this.data[2] * this.data[11] +
             this.data[13] * this.data[3] * this.data[10];
-        inv.data[5] = this.data[0] * this.data[10] * this.data[15] -
+        inv.data[5] =
+            this.data[0] * this.data[10] * this.data[15] -
             this.data[0] * this.data[11] * this.data[14] -
             this.data[8] * this.data[2] * this.data[15] +
             this.data[8] * this.data[3] * this.data[14] +
             this.data[12] * this.data[2] * this.data[11] -
             this.data[12] * this.data[3] * this.data[10];
-        inv.data[9] = -this.data[0] * this.data[9] * this.data[15] +
+        inv.data[9] =
+            -this.data[0] * this.data[9] * this.data[15] +
             this.data[0] * this.data[11] * this.data[13] +
             this.data[8] * this.data[1] * this.data[15] -
             this.data[8] * this.data[3] * this.data[13] -
             this.data[12] * this.data[1] * this.data[11] +
             this.data[12] * this.data[3] * this.data[9];
-        inv.data[13] = this.data[0] * this.data[9] * this.data[14] -
+        inv.data[13] =
+            this.data[0] * this.data[9] * this.data[14] -
             this.data[0] * this.data[10] * this.data[13] -
             this.data[8] * this.data[1] * this.data[14] +
             this.data[8] * this.data[2] * this.data[13] +
             this.data[12] * this.data[1] * this.data[10] -
             this.data[12] * this.data[2] * this.data[9];
-        inv.data[2] = this.data[1] * this.data[6] * this.data[15] -
+        inv.data[2] =
+            this.data[1] * this.data[6] * this.data[15] -
             this.data[1] * this.data[7] * this.data[14] -
             this.data[5] * this.data[2] * this.data[15] +
             this.data[5] * this.data[3] * this.data[14] +
             this.data[13] * this.data[2] * this.data[7] -
             this.data[13] * this.data[3] * this.data[6];
-        inv.data[6] = -this.data[0] * this.data[6] * this.data[15] +
+        inv.data[6] =
+            -this.data[0] * this.data[6] * this.data[15] +
             this.data[0] * this.data[7] * this.data[14] +
             this.data[4] * this.data[2] * this.data[15] -
             this.data[4] * this.data[3] * this.data[14] -
             this.data[12] * this.data[2] * this.data[7] +
             this.data[12] * this.data[3] * this.data[6];
-        inv.data[10] = this.data[0] * this.data[5] * this.data[15] -
+        inv.data[10] =
+            this.data[0] * this.data[5] * this.data[15] -
             this.data[0] * this.data[7] * this.data[13] -
             this.data[4] * this.data[1] * this.data[15] +
             this.data[4] * this.data[3] * this.data[13] +
             this.data[12] * this.data[1] * this.data[7] -
             this.data[12] * this.data[3] * this.data[5];
-        inv.data[14] = -this.data[0] * this.data[5] * this.data[14] +
+        inv.data[14] =
+            -this.data[0] * this.data[5] * this.data[14] +
             this.data[0] * this.data[6] * this.data[13] +
             this.data[4] * this.data[1] * this.data[14] -
             this.data[4] * this.data[2] * this.data[13] -
             this.data[12] * this.data[1] * this.data[6] +
             this.data[12] * this.data[2] * this.data[5];
-        inv.data[3] = -this.data[1] * this.data[6] * this.data[11] +
+        inv.data[3] =
+            -this.data[1] * this.data[6] * this.data[11] +
             this.data[1] * this.data[7] * this.data[10] +
             this.data[5] * this.data[2] * this.data[11] -
             this.data[5] * this.data[3] * this.data[10] -
             this.data[9] * this.data[2] * this.data[7] +
             this.data[9] * this.data[3] * this.data[6];
-        inv.data[7] = this.data[0] * this.data[6] * this.data[11] -
+        inv.data[7] =
+            this.data[0] * this.data[6] * this.data[11] -
             this.data[0] * this.data[7] * this.data[10] -
             this.data[4] * this.data[2] * this.data[11] +
             this.data[4] * this.data[3] * this.data[10] +
             this.data[8] * this.data[2] * this.data[7] -
             this.data[8] * this.data[3] * this.data[6];
-        inv.data[11] = -this.data[0] * this.data[5] * this.data[11] +
+        inv.data[11] =
+            -this.data[0] * this.data[5] * this.data[11] +
             this.data[0] * this.data[7] * this.data[9] +
             this.data[4] * this.data[1] * this.data[11] -
             this.data[4] * this.data[3] * this.data[9] -
             this.data[8] * this.data[1] * this.data[7] +
             this.data[8] * this.data[3] * this.data[5];
-        inv.data[15] = this.data[0] * this.data[5] * this.data[10] -
+        inv.data[15] =
+            this.data[0] * this.data[5] * this.data[10] -
             this.data[0] * this.data[6] * this.data[9] -
             this.data[4] * this.data[1] * this.data[10] +
             this.data[4] * this.data[2] * this.data[9] +
             this.data[8] * this.data[1] * this.data[6] -
             this.data[8] * this.data[2] * this.data[5];
-        det = this.data[0] * inv.data[0] + this.data[1] * inv.data[4] + this.data[2] * inv.data[8] + this.data[3] * inv.data[12];
+        det =
+            this.data[0] * inv.data[0] +
+            this.data[1] * inv.data[4] +
+            this.data[2] * inv.data[8] +
+            this.data[3] * inv.data[12];
         if (det == 0) {
             this.setIdtt();
             return;
         }
         det = 1.0 / det;
-        for (i = 0; i < 16; i++)
-            this.data[i] = inv.data[i] * det;
+        for (i = 0; i < 16; i++) this.data[i] = inv.data[i] * det;
     }
     transpose() {
-        let tmp = new mtrx4;
+        let tmp = new mtrx4();
         tmp.data[0] = this.data[0];
         tmp.data[1] = this.data[4];
         tmp.data[2] = this.data[8];
@@ -313,17 +330,22 @@ export class mtrx4 {
         this.data[15] = 1.0;
     }
     multTranslate(a, v) {
-        let x = v[0], y = v[1], z = v[2];
+        let x = v[0],
+            y = v[1],
+            z = v[2];
         let a00, a01, a02, a03;
         let a10, a11, a12, a13;
         let a20, a21, a22, a23;
         if (a.data === this.data) {
-            this.data[12] = a.data[0] * x + a.data[4] * y + a.data[8] * z + a.data[12];
-            this.data[13] = a.data[1] * x + a.data[5] * y + a.data[9] * z + a.data[13];
-            this.data[14] = a.data[2] * x + a.data[6] * y + a.data[10] * z + a.data[14];
-            this.data[15] = a.data[3] * x + a.data[7] * y + a.data[11] * z + a.data[15];
-        }
-        else {
+            this.data[12] =
+                a.data[0] * x + a.data[4] * y + a.data[8] * z + a.data[12];
+            this.data[13] =
+                a.data[1] * x + a.data[5] * y + a.data[9] * z + a.data[13];
+            this.data[14] =
+                a.data[2] * x + a.data[6] * y + a.data[10] * z + a.data[14];
+            this.data[15] =
+                a.data[3] * x + a.data[7] * y + a.data[11] * z + a.data[15];
+        } else {
             a00 = a.data[0];
             a01 = a.data[1];
             a02 = a.data[2];
@@ -376,9 +398,11 @@ export function mtrx4Mult(a, b) {
         for (j = 0; j < mrange; j++) {
             tmp = 0.0;
             for (k = 0; k < mrange; k++) {
-                tmp = tmp + a.data[(idRw(k, j, mrange))] * b.data[(idRw(i, k, mrange))];
+                tmp =
+                    tmp +
+                    a.data[idRw(k, j, mrange)] * b.data[idRw(i, k, mrange)];
             }
-            rt.data[(idRw(i, j, mrange))] = tmp;
+            rt.data[idRw(i, j, mrange)] = tmp;
         }
     }
     return rt;
