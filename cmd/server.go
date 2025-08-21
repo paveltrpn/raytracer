@@ -34,7 +34,7 @@ func main() {
 		Handler: mux,
 	}
 
-	fmt.Printf("port running on http://localhost:%v/\n", port)
+	fmt.Printf("Server running on http://localhost:%v/\n", port)
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
