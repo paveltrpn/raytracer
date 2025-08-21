@@ -21,9 +21,7 @@ export class vec2 {
 	}
 
 	lenght() {
-		return Math.sqrt(
-			this.data[0] * this.data[0] + this.data[1] * this.data[1]
-		)
+		return Math.sqrt(this.data[0] * this.data[0] + this.data[1] * this.data[1])
 	}
 
 	normalize() {

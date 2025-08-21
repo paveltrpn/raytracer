@@ -84,10 +84,7 @@ export class mtrx4 {
 			for (j = 0; j < this.order; j++) {
 				tmp = 0.0
 				for (k = 0; k < this.order; k++) {
-					tmp =
-						tmp +
-						this.data[idRw(k, j, this.order)] *
-							a.data[idRw(i, k, this.order)]
+					tmp = tmp + this.data[idRw(k, j, this.order)] * a.data[idRw(i, k, this.order)]
 				}
 				rt.data[idRw(i, j, this.order)] = tmp
 			}
@@ -337,14 +334,10 @@ export class mtrx4 {
 		let a10, a11, a12, a13
 		let a20, a21, a22, a23
 		if (a.data === this.data) {
-			this.data[12] =
-				a.data[0] * x + a.data[4] * y + a.data[8] * z + a.data[12]
-			this.data[13] =
-				a.data[1] * x + a.data[5] * y + a.data[9] * z + a.data[13]
-			this.data[14] =
-				a.data[2] * x + a.data[6] * y + a.data[10] * z + a.data[14]
-			this.data[15] =
-				a.data[3] * x + a.data[7] * y + a.data[11] * z + a.data[15]
+			this.data[12] = a.data[0] * x + a.data[4] * y + a.data[8] * z + a.data[12]
+			this.data[13] = a.data[1] * x + a.data[5] * y + a.data[9] * z + a.data[13]
+			this.data[14] = a.data[2] * x + a.data[6] * y + a.data[10] * z + a.data[14]
+			this.data[15] = a.data[3] * x + a.data[7] * y + a.data[11] * z + a.data[15]
 		} else {
 			a00 = a.data[0]
 			a01 = a.data[1]
@@ -398,9 +391,7 @@ export function mtrx4Mult(a, b) {
 		for (j = 0; j < mrange; j++) {
 			tmp = 0.0
 			for (k = 0; k < mrange; k++) {
-				tmp =
-					tmp +
-					a.data[idRw(k, j, mrange)] * b.data[idRw(i, k, mrange)]
+				tmp = tmp + a.data[idRw(k, j, mrange)] * b.data[idRw(i, k, mrange)]
 			}
 			rt.data[idRw(i, j, mrange)] = tmp
 		}

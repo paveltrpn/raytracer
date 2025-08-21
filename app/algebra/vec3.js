@@ -19,11 +19,7 @@ export class vec3 {
 		this.data[2] = src.data[2]
 	}
 	lenght() {
-		return Math.sqrt(
-			this.data[0] * this.data[0] +
-				this.data[1] * this.data[1] +
-				this.data[2] * this.data[2]
-		)
+		return Math.sqrt(this.data[0] * this.data[0] + this.data[1] * this.data[1] + this.data[2] * this.data[2])
 	}
 	normalize() {
 		let len
