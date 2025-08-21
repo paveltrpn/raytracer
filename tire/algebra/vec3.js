@@ -1,4 +1,5 @@
 import { fEPS } from "./common.js"
+
 export class vec3 {
 	data
 	order = 3
@@ -41,6 +42,7 @@ export class vec3 {
 		this.data[2] = -this.data[2]
 	}
 }
+
 export function vec3Set(x, y, z) {
 	let rt = new vec3()
 	rt.data[0] = x
@@ -48,6 +50,7 @@ export function vec3Set(x, y, z) {
 	rt.data[2] = z
 	return rt
 }
+
 export function vec3Cross(a, b) {
 	let rt = new vec3()
 	rt.data[0] = a.data[1] * b.data[2] - a.data[2] * b.data[1]
@@ -55,6 +58,7 @@ export function vec3Cross(a, b) {
 	rt.data[2] = a.data[0] * b.data[1] - a.data[1] * b.data[0]
 	return rt
 }
+
 export function vec3Normalize(v) {
 	let rt = new vec3()
 	let len
@@ -66,6 +70,7 @@ export function vec3Normalize(v) {
 	}
 	return rt
 }
+
 export function vec3Scale(v, scale) {
 	let rt = new vec3()
 	rt.data[0] = v.data[0] * scale
@@ -73,6 +78,7 @@ export function vec3Scale(v, scale) {
 	rt.data[2] = v.data[2] * scale
 	return rt
 }
+
 export function vec3Invert(v) {
 	let rt = new vec3()
 	rt.data[0] = -v.data[0]
@@ -80,9 +86,11 @@ export function vec3Invert(v) {
 	rt.data[2] = -v.data[2]
 	return rt
 }
+
 export function vec3Dot(a, b) {
 	return a.data[0] * b.data[0] + a.data[1] * b.data[1] + a.data[2] * b.data[2]
 }
+
 export function vec3Sum(a, b) {
 	let rt = new vec3()
 	rt.data[0] = a.data[0] + b.data[0]
@@ -90,6 +98,7 @@ export function vec3Sum(a, b) {
 	rt.data[2] = a.data[2] + b.data[2]
 	return rt
 }
+
 export function vec3Sub(a, b) {
 	let rt = new vec3()
 	rt.data[0] = a.data[0] - b.data[0]
