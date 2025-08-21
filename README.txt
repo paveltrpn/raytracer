@@ -1,8 +1,9 @@
- 
-# ===================================
 
-Usage:
-    $ cd cmd
-    $ go run server.go
+Usage
+- - - - - - 
 
-Access from http://localhost:8081
+Run server:
+$ cd cmd
+$ go run server.go
+
+Open browser from "http://localhost:8081".
