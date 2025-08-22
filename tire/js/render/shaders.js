@@ -13,7 +13,7 @@ export class glProgram_c {
 				"Content-Type": "text/plain",
 			},
 		}
-
+		console.log("=== " + fname)
 		try {
 			return fetch(fname, options).then((response) => {
 				return response.text()
