@@ -9,30 +9,25 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"time"
 )
 
 func handleScript(writer http.ResponseWriter, request *http.Request) {
-	slog.Info("request script:", "path", request.URL.Path)
-
 	fp := path.Join("..", "tire", "js", request.URL.Path)
 
-	slog.Info("file:", "path", fp)
+	slog.Info("request", "path", request.URL.Path, "file", fp)
 
 	http.ServeFile(writer, request, fp)
 }
 
 func handleShader(writer http.ResponseWriter, request *http.Request) {
-	slog.Info("request shader:", "path", request.URL.Path)
-
 	fp := path.Join("..", "tire", "js", "shaders", request.URL.Path)
 
-	slog.Info("file:", "path", fp)
-	// Open the file
+	slog.Info("request", "path", request.URL.Path, "file", fp)
+
 	file, err := os.Open(fp)
 	if err != nil {
 		if os.IsNotExist(err) {
-			http.NotFound(writer, request) // File not found
+			http.NotFound(writer, request)
 			return
 		}
 		http.Error(writer, "Internal Server Error", http.StatusInternalServerError)
@@ -40,7 +35,6 @@ func handleShader(writer http.ResponseWriter, request *http.Request) {
 	}
 	defer file.Close()
 
-	// Get file information to set Content-Type and other headers
 	fileInfo, err := file.Stat()
 	if err != nil {
 		http.Error(writer, "Internal Server Error", http.StatusInternalServerError)
@@ -51,20 +45,18 @@ func handleShader(writer http.ResponseWriter, request *http.Request) {
 
 	writer.Header().Set("Content-Type", contentType)
 	writer.Header().Set("Content-Length", fmt.Sprintf("%d", fileInfo.Size()))
-	// Copy the file content to the response writer
+
 	_, err = io.Copy(writer, file)
 	if err != nil {
-		fmt.Printf("Error copying file: %v\n", err) // Log error, but don't send to client if already writing
+		fmt.Printf("Error copying file: %v\n", err)
 	}
 }
 
 func handleIndex(writer http.ResponseWriter, request *http.Request) {
-	slog.Info("request index:", "path", request.URL.Path)
-
 	fp := path.Join("..", "tire", request.URL.Path, "index.html")
 
-	slog.Info("file:", "path", fp)
-	// Open the file
+	slog.Info("request", "path", request.URL.Path, "file", fp)
+
 	file, err := os.Open(fp)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -76,7 +68,6 @@ func handleIndex(writer http.ResponseWriter, request *http.Request) {
 	}
 	defer file.Close()
 
-	// Get file information to set Content-Type and other headers
 	fileInfo, err := file.Stat()
 	if err != nil {
 		http.Error(writer, "Internal Server Error", http.StatusInternalServerError)
@@ -84,7 +75,7 @@ func handleIndex(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	// Set Content-Type header based on file extension (basic example)
-	contentType := "application/octet-stream" // Default
+	contentType := "application/octet-stream"
 	switch filepath.Ext(fp) {
 	case ".html", ".htm":
 		contentType = "text/html"
@@ -105,27 +96,14 @@ func handleIndex(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", contentType)
 	writer.Header().Set("Content-Length", fmt.Sprintf("%d", fileInfo.Size()))
 
-	// Copy the file content to the response writer
 	_, err = io.Copy(writer, file)
 	if err != nil {
-		fmt.Printf("Error copying file: %v\n", err) // Log error, but don't send to client if already writing
+		fmt.Printf("Error copying file: %v\n", err)
 	}
 }
 
-func LoggingMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-		log.Printf("Request received: Method=%s, Path=%s, RemoteAddr=%s", r.Method, r.URL.Path, r.RemoteAddr)
-
-		// Call the next handler in the chain
-		next.ServeHTTP(w, r)
-
-		duration := time.Since(start)
-		log.Printf("Request completed: Method=%s, Path=%s, Duration=%s", r.Method, r.URL.Path, duration)
-	})
-}
-
 func main() {
+	// Set default logger.
 	logger := slog.Default()
 	slog.SetDefault(logger)
 
@@ -138,8 +116,10 @@ func main() {
 	h := slog.NewTextHandler(os.Stdout, nil)
 	loggedMux := slog.NewLogLogger(h, slog.LevelError)
 
+	// Server port.
 	port := 8081
 
+	// Init server.
 	server := http.Server{
 		Addr:     fmt.Sprintf(":%d", port),
 		Handler:  mux,
@@ -148,6 +128,7 @@ func main() {
 
 	fmt.Printf("Server running on http://localhost:%v/\n", port)
 
+	// Start server.
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}

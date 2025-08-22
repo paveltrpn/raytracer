@@ -3,7 +3,7 @@ Usage
 - - - - - - 
 
 Run server:
-$ cd cmd
-$ go run server.go
+$ cd server
+$ go run ./cmd/.
 
 Open browser from "http://localhost:8081".
