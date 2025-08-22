@@ -1,4 +1,3 @@
-
 import { gl } from "./render/context.js"
 import { initGlobalAppState } from "./render/context.js"
 
@@ -59,7 +58,7 @@ async function initWGLState(state) {
 	gl.depthFunc(gl.LEQUAL)
 }
 
-; (async function main() {
+;(async function main() {
 	await initGlobalAppState(globAppState)
 	await initWGLState(globAppState)
 

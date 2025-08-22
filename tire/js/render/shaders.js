@@ -1,4 +1,3 @@
-
 import { gl } from "./context.js"
 
 export class glProgram_c {
