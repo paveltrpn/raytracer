@@ -1,3 +1,6 @@
+
+import { gl } from "./context.js"
+
 export class glProgram_c {
 	gl_ctx
 	program
@@ -28,7 +31,7 @@ export class glProgram_c {
 
 		const shader = this.gl_ctx.createShader(type)
 
-		this.gl_ctx.shaderSource(shader, source)
+		gl.shaderSource(shader, source)
 		this.gl_ctx.compileShader(shader)
 
 		if (!this.gl_ctx.getShaderParameter(shader, this.gl_ctx.COMPILE_STATUS)) {

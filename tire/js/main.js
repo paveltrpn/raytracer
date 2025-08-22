@@ -1,3 +1,7 @@
+
+import { gl } from "./render/context.js"
+import { initGlobalAppState } from "./render/context.js"
+
 import * as alg from "./algebra/algebra.js"
 import { glProgram_c } from "./render/shaders.js"
 import * as gmtry from "./render/geometry.js"
@@ -7,53 +11,13 @@ let gl_normal_buf
 let gl_color_buf
 let prog
 
-export let gl
+let box
 
-let globAppState = {
+export let globAppState = {
 	glc: null,
 	width: 0,
 	height: 0,
 	aspect: 0,
-}
-
-let box
-
-async function initGlobalAppState(state) {
-	const canvas_id = "#glcanvas"
-	const text_field = "log_out"
-
-	let html_canvas = document.querySelector(canvas_id)
-
-	state.glc = gl = html_canvas.getContext("webgl2", {
-		antialias: true,
-		depth: true,
-	})
-
-	console.log(gl)
-
-	state.width = gl.drawingBufferWidth
-	state.height = gl.drawingBufferHeight
-	state.aspect = state.width / state.height
-
-	if (!gl) {
-		alert("cube_c::setup(): Unable to initialize WebGL. Your browser or machine may not support it.")
-		return
-	}
-
-	let log_out = document.getElementById(text_field)
-
-	log_out.innerText =
-		gl.getParameter(gl.VERSION) +
-		"; " +
-		gl.getParameter(gl.SHADING_LANGUAGE_VERSION) +
-		"; " +
-		gl.getParameter(gl.VENDOR)
-
-	let gl_ext = gl.getSupportedExtensions()
-
-	for (let i = 0; i < gl_ext.length; i++) {
-		log_out.innerText = log_out.innerText + gl_ext[i] + " ;"
-	}
 }
 
 async function initWGLState(state) {
