@@ -20,7 +20,7 @@ func handleScript(writer http.ResponseWriter, request *http.Request) {
 }
 
 func handleShader(writer http.ResponseWriter, request *http.Request) {
-	fp := path.Join("..", "tire", "js", "shaders", request.URL.Path)
+	fp := path.Join("..", "tire", "shaders", request.URL.Path)
 
 	slog.Info("request", "path", request.URL.Path, "file", fp)
 
