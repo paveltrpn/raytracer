@@ -1,4 +1,4 @@
-module tire_server
+module tire_rt
 
 go 1.24
 

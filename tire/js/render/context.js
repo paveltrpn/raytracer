@@ -6,6 +6,11 @@ export async function initGlobalAppState(state) {
 
 	let html_canvas = document.querySelector(canvas_id)
 
+	document.getElementById("fetch_test").addEventListener("click", function () {
+		console.log(" === ")
+		alert("Button clicked!")
+	})
+
 	state.glc = gl = html_canvas.getContext("webgl2", {
 		antialias: true,
 		depth: true,
