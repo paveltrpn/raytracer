@@ -58,7 +58,7 @@ async function initWGLState(state) {
 	gl.depthFunc(gl.LEQUAL)
 }
 
-;(async function main() {
+async function main() {
 	await initGlobalAppState(globAppState)
 	await initWGLState(globAppState)
 
@@ -93,4 +93,6 @@ async function initWGLState(state) {
 	}
 
 	requestAnimationFrame(loop)
-})()
+}
+
+main()
