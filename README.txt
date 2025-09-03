@@ -11,5 +11,5 @@ Open browser from "http://localhost:8081".
 Tip
 - - - - - - 
 Don`t forget trigger lint and format
-$ npx eslint tire/.
-$ npx prettier tire/. --write
+$ npx biome lint tire/.
+$ npx biome format tire/. --write
