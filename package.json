@@ -16,9 +16,5 @@
 		"url": "https://github.com/paveltrpn/raytracer/issues"
 	},
 	"homepage": "https://github.com/paveltrpn/raytracer#readme",
-	"devDependencies": {
-		"eslint": "^9.34.0",
-		"prettier": "^3.6.2"
-	},
-    "type": "module"
+	"type": "module"
 }
