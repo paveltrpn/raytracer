@@ -1,5 +1,6 @@
 import * as vec3 from "./vec3.js";
 import { idRw } from "./common.js";
+
 export class mtrx4 {
 	data;
 	order = 4;
@@ -24,6 +25,7 @@ export class mtrx4 {
 			}
 		}
 	}
+
 	setIdtt() {
 		let i, j;
 		for (i = 0; i < this.order; i++) {
@@ -36,30 +38,33 @@ export class mtrx4 {
 			}
 		}
 	}
+
 	fromMtrx4(src) {
 		for (let i = 0; i < this.order * this.order; i++) {
 			this.data[i] = src.data[i];
 		}
 	}
+
 	fromArray(src) {
 		for (let i = 0; i < this.order * this.order; i++) {
 			this.data[i] = src[i];
 		}
 	}
+
 	fromQtnn(src) {
-		let wx, wy, wz, xx, yy, yz, xy, xz, zz, x2, y2, z2;
-		x2 = src.data[0] + src.data[0];
-		y2 = src.data[1] + src.data[1];
-		z2 = src.data[2] + src.data[2];
-		xx = src.data[0] * x2;
-		xy = src.data[0] * y2;
-		xz = src.data[0] * z2;
-		yy = src.data[1] * y2;
-		yz = src.data[1] * z2;
-		zz = src.data[2] * z2;
-		wx = src.data[3] * x2;
-		wy = src.data[3] * y2;
-		wz = src.data[3] * z2;
+		const x2 = src.data[0] + src.data[0];
+		const y2 = src.data[1] + src.data[1];
+		const z2 = src.data[2] + src.data[2];
+		const xx = src.data[0] * x2;
+		const xy = src.data[0] * y2;
+		const xz = src.data[0] * z2;
+		const yy = src.data[1] * y2;
+		const yz = src.data[1] * z2;
+		const zz = src.data[2] * z2;
+		const wx = src.data[3] * x2;
+		const wy = src.data[3] * y2;
+		const wz = src.data[3] * z2;
+
 		this.data[0] = 1.0 - (yy + zz);
 		this.data[1] = xy - wz;
 		this.data[2] = xz + wy;
@@ -77,9 +82,10 @@ export class mtrx4 {
 		this.data[14] = 0.0;
 		this.data[15] = 1.0;
 	}
+
 	mult(a) {
 		let i, j, k, tmp;
-		let rt = new mtrx4();
+		const rt = new mtrx4();
 		for (i = 0; i < this.order; i++) {
 			for (j = 0; j < this.order; j++) {
 				tmp = 0.0;
@@ -93,8 +99,9 @@ export class mtrx4 {
 		}
 		this.fromMtrx4(rt);
 	}
+
 	setPerspective(fovy, aspect, near, far) {
-		let f = 1.0 / Math.tan(fovy / 2);
+		const f = 1.0 / Math.tan(fovy / 2);
 		let nf;
 		this.data[0] = f / aspect;
 		this.data[1] = 0;
@@ -119,14 +126,16 @@ export class mtrx4 {
 			this.data[14] = -2 * near;
 		}
 	}
+
 	setTranslate(vec) {
 		this.setIdtt();
 		this.data[12] = vec.data[0];
 		this.data[13] = vec.data[1];
 		this.data[14] = vec.data[2];
 	}
+
 	invert() {
-		let inv = new mtrx4();
+		const inv = new mtrx4();
 		let i, det;
 		inv.data[0] =
 			this.data[5] * this.data[10] * this.data[15] -
@@ -252,8 +261,9 @@ export class mtrx4 {
 		det = 1.0 / det;
 		for (i = 0; i < 16; i++) this.data[i] = inv.data[i] * det;
 	}
+
 	transpose() {
-		let tmp = new mtrx4();
+		const tmp = new mtrx4();
 		tmp.data[0] = this.data[0];
 		tmp.data[1] = this.data[4];
 		tmp.data[2] = this.data[8];
@@ -274,6 +284,7 @@ export class mtrx4 {
 			this.data[i] = tmp.data[i];
 		}
 	}
+
 	setAxisAngl(axis, phi) {
 		let cosphi, sinphi, vxvy, vxvz, vyvz, vx, vy, vz;
 		let ax = new vec3.vec3();
@@ -303,6 +314,7 @@ export class mtrx4 {
 		this.data[14] = 0.0;
 		this.data[15] = 1.0;
 	}
+
 	setEuler(yaw, pitch, roll) {
 		let cosy, siny, cosp, sinp, cosr, sinr;
 		cosy = Math.cos(yaw);
@@ -328,8 +340,9 @@ export class mtrx4 {
 		this.data[14] = 0.0;
 		this.data[15] = 1.0;
 	}
+
 	multTranslate(a, v) {
-		let x = v[0],
+		const x = v[0],
 			y = v[1],
 			z = v[2];
 		let a00, a01, a02, a03;
@@ -376,10 +389,11 @@ export class mtrx4 {
 		}
 	}
 }
+
 export function mtrx4Transpose(m) {
 	const mrange = 4;
 	let i, j, tmp;
-	let rt = new mtrx4(m);
+	const rt = new mtrx4(m);
 	for (i = 0; i < mrange; i++) {
 		for (j = 0; j < i; j++) {
 			tmp = rt.data[idRw(i, i, mrange)];
@@ -389,10 +403,11 @@ export function mtrx4Transpose(m) {
 	}
 	return rt;
 }
+
 export function mtrx4Mult(a, b) {
 	const mrange = 4;
 	let i, j, k, tmp;
-	let rt = new mtrx4();
+	const rt = new mtrx4();
 	for (i = 0; i < mrange; i++) {
 		for (j = 0; j < mrange; j++) {
 			tmp = 0.0;
