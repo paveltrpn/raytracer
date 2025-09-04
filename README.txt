@@ -1,4 +1,16 @@
 
+
+Build
+- - - - - -
+
+Dependencies:
+
+Nlohmann json
+$ git clone https://github.com/nlohmann/json third_party/json
+
+µWebSockets
+$ git clone https://github.com/uNetworking/uWebSockets third_party/µWebSockets
+
 Usage
 - - - - - - 
 
