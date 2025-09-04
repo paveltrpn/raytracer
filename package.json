@@ -16,5 +16,8 @@
 		"url": "https://github.com/paveltrpn/raytracer/issues"
 	},
 	"homepage": "https://github.com/paveltrpn/raytracer#readme",
-	"type": "module"
+	"type": "module",
+	"devDependencies": {
+		"express": "^5.1.0"
+	}
 }
