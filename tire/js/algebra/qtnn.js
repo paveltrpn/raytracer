@@ -92,36 +92,15 @@ export class qtnn {
 }
 
 function qtnnDot(a, b) {
-	return (
-		a.data[0] * b.data[0] +
-		a.data[1] * b.data[1] +
-		a.data[2] * b.data[2] +
-		a.data[3] * b.data[3]
-	);
+	return a.data[0] * b.data[0] + a.data[1] * b.data[1] + a.data[2] * b.data[2] + a.data[3] * b.data[3];
 }
 
 function qtnnMult(a, b) {
 	let rt = new qtnn();
-	rt.data[3] =
-		a.data[3] * b.data[3] -
-		a.data[0] * b.data[0] -
-		a.data[1] * b.data[1] -
-		a.data[2] * b.data[2];
-	rt.data[0] =
-		a.data[3] * b.data[0] +
-		a.data[0] * b.data[3] +
-		a.data[1] * b.data[2] -
-		a.data[2] * b.data[1];
-	rt.data[1] =
-		a.data[3] * b.data[1] -
-		a.data[0] * b.data[2] +
-		a.data[1] * b.data[3] +
-		a.data[2] * b.data[0];
-	rt.data[2] =
-		a.data[3] * b.data[2] +
-		a.data[0] * b.data[1] -
-		a.data[1] * b.data[0] +
-		a.data[2] * b.data[3];
+	rt.data[3] = a.data[3] * b.data[3] - a.data[0] * b.data[0] - a.data[1] * b.data[1] - a.data[2] * b.data[2];
+	rt.data[0] = a.data[3] * b.data[0] + a.data[0] * b.data[3] + a.data[1] * b.data[2] - a.data[2] * b.data[1];
+	rt.data[1] = a.data[3] * b.data[1] - a.data[0] * b.data[2] + a.data[1] * b.data[3] + a.data[2] * b.data[0];
+	rt.data[2] = a.data[3] * b.data[2] + a.data[0] * b.data[1] - a.data[1] * b.data[0] + a.data[2] * b.data[3];
 	return rt;
 }
 

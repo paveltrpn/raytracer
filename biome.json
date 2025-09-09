@@ -1,22 +1,23 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.5/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
   "formatter": {
     "enabled": true,
     "indentStyle": "tab",
-    "lineWidth": 120,
-    "quoteStyle": "double",
     "indentWidth": 4,
+    "lineWidth": 120,
     "lineEnding": "lf",
-    "arrowParentheses":"always",
     "bracketSameLine": false,
-    "bracketSpacing": true,
-    "jsxQuoteStyle": "double",
-    "quoteProperties": "asNeeded",
-    "semicolons": "asNeeded",
-    "trailingCommas": "all"
+    "bracketSpacing": true
+  },
+  "html": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 4
+    }
   },
   "linter": {
-    "enabled": true
+    "enabled": true,
     "rules": {
       "correctness": {
         "noUnusedVariables": {
@@ -27,11 +28,11 @@
       "style": {
         "useConst": {
           "level": "warn",
-          "fix": "unsafe" 
+          "fix": "unsafe"
         },
         "useTemplate": {
           "level": "warn",
-          "fix": "safe" 
+          "fix": "safe"
         },
         "useNamingConvention": {
           "level": "error",
@@ -41,7 +42,6 @@
         }
       }
     }
-  }
   },
   "assist": {
     "enabled": false

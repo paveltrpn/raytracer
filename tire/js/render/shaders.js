@@ -34,10 +34,7 @@ export class glProgram_c {
 		this.gl_ctx.compileShader(shader);
 
 		if (!this.gl_ctx.getShaderParameter(shader, this.gl_ctx.COMPILE_STATUS)) {
-			alert(
-				"An error occurred compiling the shaders: " +
-					this.gl_ctx.getShaderInfoLog(shader),
-			);
+			alert("An error occurred compiling the shaders: " + this.gl_ctx.getShaderInfoLog(shader));
 			this.gl_ctx.deleteShader(shader);
 			return null;
 		}
@@ -46,28 +43,17 @@ export class glProgram_c {
 	}
 
 	async initShaderProgram(vsSource, fsSource) {
-		const vertexShader = await this.loadShader(
-			this.gl_ctx.VERTEX_SHADER,
-			vsSource,
-		);
+		const vertexShader = await this.loadShader(this.gl_ctx.VERTEX_SHADER, vsSource);
 
-		const fragmentShader = await this.loadShader(
-			this.gl_ctx.FRAGMENT_SHADER,
-			fsSource,
-		);
+		const fragmentShader = await this.loadShader(this.gl_ctx.FRAGMENT_SHADER, fsSource);
 
 		this.program = this.gl_ctx.createProgram();
 		this.gl_ctx.attachShader(this.program, vertexShader);
 		this.gl_ctx.attachShader(this.program, fragmentShader);
 		this.gl_ctx.linkProgram(this.program);
 
-		if (
-			!this.gl_ctx.getProgramParameter(this.program, this.gl_ctx.LINK_STATUS)
-		) {
-			alert(
-				"Unable to initialize the shader program: " +
-					this.gl_ctx.getProgramInfoLog(this.program),
-			);
+		if (!this.gl_ctx.getProgramParameter(this.program, this.gl_ctx.LINK_STATUS)) {
+			alert("Unable to initialize the shader program: " + this.gl_ctx.getProgramInfoLog(this.program));
 			return null;
 		}
 	}

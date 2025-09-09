@@ -23,9 +23,7 @@ export async function initGlobalAppState(state) {
 	state.aspect = state.width / state.height;
 
 	if (!gl) {
-		alert(
-			"cube_c::setup(): Unable to initialize WebGL. Your browser or machine may not support it.",
-		);
+		alert("cube_c::setup(): Unable to initialize WebGL. Your browser or machine may not support it.");
 		return;
 	}
 

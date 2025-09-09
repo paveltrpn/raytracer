@@ -34,7 +34,7 @@ async function initWGLState(state) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, gl_vert_buf);
 	gl.bufferData(gl.ARRAY_BUFFER, box.vertices, gl.STATIC_DRAW);
 
-	let vertexPosition = gl.getAttribLocation(prog.program, "aVertexPosition");
+	const vertexPosition = gl.getAttribLocation(prog.program, "aVertexPosition");
 
 	gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vertexPosition);
@@ -42,7 +42,7 @@ async function initWGLState(state) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, gl_normal_buf);
 	gl.bufferData(gl.ARRAY_BUFFER, box.normals, gl.STATIC_DRAW);
 
-	let vertexNormal = gl.getAttribLocation(prog.program, "aVertexNormal");
+	const vertexNormal = gl.getAttribLocation(prog.program, "aVertexNormal");
 
 	gl.vertexAttribPointer(vertexNormal, 3, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vertexNormal);
@@ -50,7 +50,7 @@ async function initWGLState(state) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, gl_color_buf);
 	gl.bufferData(gl.ARRAY_BUFFER, box.colors, gl.STATIC_DRAW);
 
-	let vertexColor = gl.getAttribLocation(prog.program, "aVertexColor");
+	const vertexColor = gl.getAttribLocation(prog.program, "aVertexColor");
 
 	gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vertexColor);
@@ -62,26 +62,21 @@ async function main() {
 	await initGlobalAppState(globAppState);
 	await initWGLState(globAppState);
 
-	let projectionMatrix = new alg.mtrx4();
+	const projectionMatrix = new alg.mtrx4();
 
-	projectionMatrix.setPerspective(
-		alg.degToRad(45),
-		globAppState.aspect,
-		0.1,
-		100.0,
-	);
+	projectionMatrix.setPerspective(alg.degToRad(45), globAppState.aspect, 0.1, 100.0);
 
-	let transMtrx = new alg.mtrx4();
+	const transMtrx = new alg.mtrx4();
 	transMtrx.setTranslate(new alg.vec3(0.0, 0.0, -7.0));
 	projectionMatrix.mult(transMtrx);
 
-	let fooQtnn = new alg.qtnn();
+	const fooQtnn = new alg.qtnn();
 	fooQtnn.setAxisAngl(new alg.vec3(0.1, 0.4, 0.3), alg.degToRad(1));
 
-	let rot = new alg.mtrx4();
+	const rot = new alg.mtrx4();
 	rot.fromQtnn(fooQtnn);
 
-	let rot_trans = rot;
+	const rot_trans = rot;
 
 	function loop() {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
