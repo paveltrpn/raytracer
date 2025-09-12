@@ -289,6 +289,10 @@ export class mtrx4 {
 		}
 	}
 
+	/**
+	 * param {vec3} axis
+	 * param {number} phi
+	 */
 	setAxisAngl(axis, phi) {
 		let ax = new vec3.vec3();
 		ax = vec3.vec3Normalize(axis);
@@ -323,6 +327,11 @@ export class mtrx4 {
 		this.data[15] = 1.0;
 	}
 
+	/**
+	 * param {number} yaw
+	 * param {number} pitch
+	 * param {number} roll
+	 */
 	setEuler(yaw, pitch, roll) {
 		const cosy = Math.cos(yaw);
 		const siny = Math.sin(yaw);
