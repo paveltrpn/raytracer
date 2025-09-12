@@ -1,5 +1,5 @@
 import express from "express";
-import path from "path";
+import path from "node:path";
 
 const app = express();
 const port = 8081;

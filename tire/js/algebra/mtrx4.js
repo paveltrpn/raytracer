@@ -16,7 +16,7 @@ export class mtrx4 {
 			this.data = new Float32Array(16);
 			for (i = 0; i < this.order; i++) {
 				for (j = 0; j < this.order; j++) {
-					if (i == j) {
+					if (i === j) {
 						this.data[idRw(i, j, this.order)] = 1.0;
 					} else {
 						this.data[idRw(i, j, this.order)] = 0.0;
@@ -30,7 +30,7 @@ export class mtrx4 {
 		let i, j;
 		for (i = 0; i < this.order; i++) {
 			for (j = 0; j < this.order; j++) {
-				if (i == j) {
+				if (i === j) {
 					this.data[idRw(i, j, this.order)] = 1.0;
 				} else {
 					this.data[idRw(i, j, this.order)] = 0.0;
@@ -39,12 +39,18 @@ export class mtrx4 {
 		}
 	}
 
+	/**
+	 * param {mtrx4} src
+	 */
 	fromMtrx4(src) {
 		for (let i = 0; i < this.order * this.order; i++) {
 			this.data[i] = src.data[i];
 		}
 	}
 
+	/**
+	 * param {Float32Array} src
+	 */
 	fromArray(src) {
 		for (let i = 0; i < this.order * this.order; i++) {
 			this.data[i] = src[i];
@@ -252,7 +258,7 @@ export class mtrx4 {
 			this.data[1] * inv.data[4] +
 			this.data[2] * inv.data[8] +
 			this.data[3] * inv.data[12];
-		if (det == 0) {
+		if (det === 0) {
 			this.setIdtt();
 			return;
 		}
