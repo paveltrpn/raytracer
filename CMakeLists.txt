@@ -13,16 +13,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 include_directories("modules")
 include_directories("third_party/json/include")
-include_directories("third_party/uWebSockets/src")
 
-# Module websocket
+# Module network
 # ================================
-add_library(websocket)
-target_sources(websocket
+add_library(network)
+target_sources(network
   PUBLIC
     FILE_SET CXX_MODULES FILES
-    rt/websocket/websocket.cpp
-    rt/websocket/server.cpp
+    rt/network/network.cpp
+    rt/network/server.cpp
 )
-target_link_libraries(websocket)
+target_link_libraries(network)
 

@@ -2,9 +2,10 @@
 module;
 
 #include <print>
-#include <App.h>
+#include <boost/beast.hpp>
+#include <boost/asio.hpp>
 
-export module websocket:server;
+export module network:server;
 
 namespace tire {
 

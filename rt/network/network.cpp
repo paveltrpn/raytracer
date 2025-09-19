@@ -1,5 +1,5 @@
 
 module;
 
-export module websocket;
+export module network;
 export import :server;

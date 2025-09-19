@@ -14,16 +14,12 @@ else
   set shortmess=aoO
 endif
 badd +1 tire/js/main.js
-badd +27 server/cmd/server.go
 badd +293 tire/js/algebra/mtrx4.js
-badd +2 health://
-badd +66 /mnt/main/go_latest/src/net/http/status.go
-badd +1 /mnt/main/code/tire/modules/render/gl/rendergl.cpp
-badd +56 /mnt/main/code/tire/modules/render/render.cpp
-badd +25 /mnt/main/code/tire/modules/config/config.cpp
 badd +1 tire/js/render/context.js
-badd +1 tire/js/render/geometry.js
-badd +2 server/server.js
+badd +18 tire/js/render/geometry.js
+badd +1 server/server.js
+badd +26 CMakeLists.txt
+badd +8 rt/network/server.cpp
 argglobal
 %argdel
 set stal=2
@@ -53,7 +49,6 @@ exe 'vert 1resize ' . ((&columns * 155 + 234) / 468)
 exe 'vert 2resize ' . ((&columns * 156 + 234) / 468)
 exe 'vert 3resize ' . ((&columns * 155 + 234) / 468)
 argglobal
-balt server/cmd/server.go
 setlocal foldmethod=manual
 setlocal foldexpr=0
 setlocal foldmarker={{{,}}}
@@ -92,14 +87,13 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 306
-normal! 059|
+normal! 030|
 wincmd w
 argglobal
 if bufexists(fnamemodify("tire/js/main.js", ":p")) | buffer tire/js/main.js | else | edit tire/js/main.js | endif
 if &buftype ==# 'terminal'
   silent file tire/js/main.js
 endif
-balt server/cmd/server.go
 setlocal foldmethod=manual
 setlocal foldexpr=0
 setlocal foldmarker={{{,}}}
@@ -117,7 +111,6 @@ normal! zt
 keepjumps 22
 normal! 0
 wincmd w
-2wincmd w
 exe 'vert 1resize ' . ((&columns * 155 + 234) / 468)
 exe 'vert 2resize ' . ((&columns * 156 + 234) / 468)
 exe 'vert 3resize ' . ((&columns * 155 + 234) / 468)
@@ -161,14 +154,14 @@ if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
 keepjumps 1
-normal! 0
+normal! 015|
 wincmd w
 argglobal
-if bufexists(fnamemodify("tire/js/render/geometry.js", ":p")) | buffer tire/js/render/geometry.js | else | edit tire/js/render/geometry.js | endif
+if bufexists(fnamemodify("CMakeLists.txt", ":p")) | buffer CMakeLists.txt | else | edit CMakeLists.txt | endif
 if &buftype ==# 'terminal'
-  silent file tire/js/render/geometry.js
+  silent file CMakeLists.txt
 endif
-balt tire/js/render/context.js
+balt tire/js/render/geometry.js
 setlocal foldmethod=manual
 setlocal foldexpr=0
 setlocal foldmarker={{{,}}}
@@ -179,16 +172,19 @@ setlocal foldnestmax=20
 setlocal foldenable
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 51) / 103)
+let s:l = 26 - ((25 * winheight(0) + 51) / 103)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 0
+keepjumps 26
+normal! 029|
 wincmd w
 argglobal
-enew
-balt server/cmd/server.go
+if bufexists(fnamemodify("rt/network/server.cpp", ":p")) | buffer rt/network/server.cpp | else | edit rt/network/server.cpp | endif
+if &buftype ==# 'terminal'
+  silent file rt/network/server.cpp
+endif
+balt CMakeLists.txt
 setlocal foldmethod=manual
 setlocal foldexpr=0
 setlocal foldmarker={{{,}}}
@@ -197,11 +193,20 @@ setlocal foldlevel=0
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldenable
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 8 - ((7 * winheight(0) + 51) / 103)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 8
+normal! 021|
 wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 155 + 234) / 468)
 exe 'vert 2resize ' . ((&columns * 156 + 234) / 468)
 exe 'vert 3resize ' . ((&columns * 155 + 234) / 468)
-tabnext 1
+tabnext 2
 set stal=1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -217,7 +222,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :
