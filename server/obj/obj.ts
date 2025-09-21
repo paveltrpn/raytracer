@@ -1,0 +1,3 @@
+function readObj(path: string) {
+    //
+}
