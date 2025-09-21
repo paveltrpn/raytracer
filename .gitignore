@@ -2,3 +2,4 @@ node_modules/*
 build/*
 third_party/*
 !third_party/.gitkeep
+Session.vim
