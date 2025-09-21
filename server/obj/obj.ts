@@ -1,5 +1,5 @@
-import { Mesh } from "../mesh/mesh.ts";
+import { MeshData } from "./mesh_data.ts";
 
-export function readObj(path: string): Mesh {
-    return new Mesh();
+export function readObj(path: string): MeshData {
+    return new MeshData();
 }
