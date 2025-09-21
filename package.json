@@ -18,6 +18,8 @@
 	"homepage": "https://github.com/paveltrpn/raytracer#readme",
 	"type": "module",
 	"devDependencies": {
+		"@types/node": "^24.5.2",
 		"express": "^5.1.0"
-	}
+	},
+	"allowImportingTsExtensions": true
 }
