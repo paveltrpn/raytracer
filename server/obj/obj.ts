@@ -1,4 +1,5 @@
 import { MeshData } from "./mesh_data.ts";
+import fs from "node:fs";
 
 /**
  * @brief - read wavefornt obj file in object, contains
