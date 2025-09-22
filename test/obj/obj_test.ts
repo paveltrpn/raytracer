@@ -9,6 +9,7 @@ function main() {
 
     try {
         const msh = obj.readObj("assets/demon_baby.obj");
+        console.log(msh.getName());
     } catch (e) {
         console.log(e);
         process.abort();

@@ -3,6 +3,11 @@
  */
 export class MeshData {
     /**
+     * Mesh name.
+     */
+    name: string;
+
+    /**
      * Array of vertecies, tri-component vectors.
      * [{float: x, float: y, float z}, {...}, {...}, ...]
      */
@@ -29,8 +34,8 @@ export class MeshData {
      */
     vertclrs: Float32Array;
 
-    constructor() {
-        //
+    constructor(name: string) {
+        this.name = name;
     }
 
     setVertecies(vertecies: Float32Array) {
@@ -51,6 +56,10 @@ export class MeshData {
 
     setVertexColors(vc: Float32Array) {
         this.vertclrs = vc;
+    }
+
+    getName(): string {
+        return this.name;
     }
 
     toJson() {
