@@ -6,5 +6,9 @@ import fs from "node:fs";
  * all mesh related data.
  */
 export function readObj(path: string): MeshData {
+    if (!fs.existsSync(path)) {
+        throw Error(`File ${path} not exist`);
+    }
+    
     return new MeshData();
 }

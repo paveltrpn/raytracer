@@ -1,3 +1,4 @@
+import { abort } from "process";
 import * as obj from "../../server/obj/obj.ts";
 
 /**
@@ -5,7 +6,13 @@ import * as obj from "../../server/obj/obj.ts";
  */
 function main() {
     console.log("Wavefront obj loader test");
-    const msh = obj.readObj("asdasd");
+
+    try {
+        const msh = obj.readObj("assets/demon_baby.obj");
+    } catch (e) {
+        console.log(e);
+        process.abort();
+    }
 }
 
 /**
