@@ -1,24 +1,26 @@
 
 
-Build
-- - - - - -
-
 Dependencies:
-
+- - - - - -
 Boost
 $ apt install libboost-all
 
-Nlohmann json
-$ git clone https://github.com/nlohmann/json third_party/json
+Build
+- - - - - -
+Initialize node modules:
+$ node install
 
 Usage
 - - - - - - 
-
 Run server:
-$ cd server
-$ go run ./cmd/.
+$ node server/server.ts
 
 Open browser from "http://localhost:8081".
+
+Environment
+- - - - - - -
+$ npm install -g typescript-language-server typescript
+$ npm install -g @biomejs/biome
 
 Tip
 - - - - - - 

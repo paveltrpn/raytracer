@@ -1,7 +1,4 @@
-node_modules/*
-build/*
-third_party/*
-!third_party/.gitkeep
-assets/*
-!assets/.gitkeep
+node_modules/
+build/
+assets/
 Session.vim
