@@ -1,6 +1,9 @@
+/**
+ * The one and only WebGL entry point
+ */
 export let gl = null;
 
-export async function initGlobalAppState(state) {
+export async function initWebGLContext() {
     const canvas_id = "#glcanvas";
     const text_field = "log_out";
 
@@ -11,16 +14,12 @@ export async function initGlobalAppState(state) {
         alert("Button clicked!");
     });
 
-    state.glc = gl = html_canvas.getContext("webgl2", {
+    gl = html_canvas.getContext("webgl2", {
         antialias: true,
         depth: true,
     });
 
     console.log(gl);
-
-    state.width = gl.drawingBufferWidth;
-    state.height = gl.drawingBufferHeight;
-    state.aspect = state.width / state.height;
 
     if (!gl) {
         alert("cube_c::setup(): Unable to initialize WebGL. Your browser or machine may not support it.");
