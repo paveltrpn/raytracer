@@ -31,14 +31,15 @@ export async function initGlobalAppState(state) {
 
     log_out.innerText =
         gl.getParameter(gl.VERSION) +
-        "; " +
+        "\n " +
         gl.getParameter(gl.SHADING_LANGUAGE_VERSION) +
-        "; " +
-        gl.getParameter(gl.VENDOR);
+        "\n " +
+        gl.getParameter(gl.VENDOR) +
+        "\n";
 
-    let gl_ext = gl.getSupportedExtensions();
+    const glExtString = gl.getSupportedExtensions();
 
-    for (let i = 0; i < gl_ext.length; i++) {
-        log_out.innerText = log_out.innerText + gl_ext[i] + " ;";
+    for (let i = 0; i < glExtString.length; i++) {
+        log_out.innerText = log_out.innerText + glExtString[i] + "\n";
     }
 }
