@@ -1,4 +1,3 @@
-// import { gl } from "context.js";
 import { initWebGLContext } from "./context.js";
 import { RenderWGL } from "./render/render.js";
 
