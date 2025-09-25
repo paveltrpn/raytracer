@@ -16,7 +16,7 @@ function main() {
         res.sendFile(path.join(workpath, "tire", "index.html"));
     });
 
-    app.get("/js/*js", (req, res) => {
+    app.get("/*js", (req, res) => {
         const file = path.join(workpath, "tire", req.url);
         res.sendFile(file);
     });
