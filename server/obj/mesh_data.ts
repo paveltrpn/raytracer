@@ -47,7 +47,7 @@ export class MeshData {
     }
 
     setTexCoords(tc: Float32Array) {
-        this.texcrds = this.texcrds;
+        this.texcrds = tc;
     }
 
     setNormals(normals: Float32Array) {
