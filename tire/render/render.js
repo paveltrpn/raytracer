@@ -69,20 +69,36 @@ export class RenderWGL {
         this.rot_trans = this.rot;
     }
 
+    /**
+     *
+     * @returns {string}
+     */
     getExtensionsList() {
-        return this.glHandle.getSupportedExtensions();
+        return gl.getSupportedExtensions();
     }
 
+    /**
+     *
+     * @returns {string}
+     */
     getGlVersion() {
-        return this.glHandle.getParameter(gl.VERSION);
+        return gl.getParameter(gl.VERSION);
     }
 
+    /**
+     *
+     * @returns {string}
+     */
     getGLSLVersion() {
-        return this.glHandle.getParameter(gl.SHADING_LANGUAGE_VERSION);
+        return gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
     }
 
+    /**
+     *
+     * @returns {Array<string>}
+     */
     getGLVendor() {
-        return this.glHandle.getParameter(gl.SHADING_LANGUAGE_VERSION);
+        return gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
     }
 
     loop() {

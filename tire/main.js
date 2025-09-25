@@ -2,7 +2,7 @@ import { initWebGLContext } from "./context.js";
 import { RenderWGL } from "./render/render.js";
 
 /**
- * @brief - entry point.
+ * @brief - Entry point.
  */
 async function main() {
     // After this call global "gl" handle becomes valid!
