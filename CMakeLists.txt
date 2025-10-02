@@ -6,14 +6,14 @@ add_compile_options(-stdlib=libc++ -std=c++26)
 add_link_options(-stdlib=libc++)
 set(CMAKE_BUILD_TYPE Debug)
 
-project (rt)
+project(rt)
 
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 include_directories("modules")
-include_directories("third_party/json/include")
 
+# ================================
 # Module network
 # ================================
 add_library(network)
@@ -24,4 +24,18 @@ target_sources(network
     rt/network/server.cpp
 )
 target_link_libraries(network)
+
+# ================================
+# Module image
+# ================================
+add_library(image)
+target_sources(image
+  PUBLIC
+    FILE_SET CXX_MODULES FILES
+    rt/image/interface.cpp
+    rt/image/image.cpp
+)
+target_link_libraries(image)
+
+add_subdirectory(test)
 
