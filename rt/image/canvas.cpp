@@ -9,7 +9,20 @@ import :image;
 
 namespace tire {
 
-struct Canvas final : Image {
+int32_t ipart( float a ) {
+    float rt = 0;
+
+    std::modf( a, &rt );
+
+    return int32_t( rt );
+}
+
+float fpart( float a ) {
+    float tmp = 0;
+    return std::modf( a, &tmp );
+}
+
+export struct Canvas final : Image {
     Canvas( int32_t width, int32_t height ) {
         height_ = height;
         width_ = width;
@@ -19,12 +32,12 @@ struct Canvas final : Image {
 
         data_ = new char[width_ * height_ * ( bpp_ / 8 )];
 
-        // цвет холста по умолчанию
+        // Default canvas color.
         std::fill( data_, data_ + width_ * height_ * ( bpp_ / 8 ), 0 );
         // std::memset(data, 128, width_*height_*bpp);
     }
 
-    auto set_pen_size( int32_t size ) -> void {
+    auto setPenSize( int32_t size ) -> void {
         //
         penSize_ = size;
     }
@@ -46,6 +59,175 @@ struct Canvas final : Image {
         data_[( ( x * offst ) * height_ + y * offst ) + 0] = penColorR_;
         data_[( ( x * offst ) * height_ + y * offst ) + 1] = penColorG_;
         data_[( ( x * offst ) * height_ + y * offst ) + 2] = penColorB_;
+    }
+
+    auto putPixelBr( int32_t x, int32_t y, float br ) -> void {
+        if ( ( x < 0 ) || ( y < 0 ) || ( x >= width_ ) || ( y >= height_ ) ) {
+            return;
+        }
+
+        const auto offst = bpp_ / 8;
+
+        data_[( ( x * offst ) * height_ + y * offst ) + 0] =
+            uint8_t( std::ceil( penColorR_ * br ) );
+        data_[( ( x * offst ) * height_ + y * offst ) + 1] =
+            uint8_t( std::ceil( penColorG_ * br ) );
+        data_[( ( x * offst ) * height_ + y * offst ) + 2] =
+            uint8_t( std::ceil( penColorB_ * br ) );
+    }
+
+    void lineBrasenham( std::pair<int32_t, int32_t> start,
+                        std::pair<int32_t, int32_t> end ) {
+        int32_t dX = abs( end.first - start.first );
+        int32_t dY = abs( end.second - start.second );
+        int32_t signX, signY;
+        int32_t err2, err = dX - dY;
+        std::pair<int32_t, int32_t> now_point = start;
+
+        if ( start.first < end.first ) {
+            signX = 1;
+        } else {
+            signX = -1;
+        }
+
+        if ( start.second < end.second ) {
+            signY = 1;
+        } else {
+            signY = -1;
+        }
+
+        putPixel( end.first, end.second );
+
+        while ( ( now_point.first != end.first ) ||
+                ( now_point.second != end.second ) ) {
+            putPixel( now_point.first, now_point.second );
+
+            err2 = err * 2;
+
+            if ( err2 > -dY ) {
+                err -= dY;
+                now_point.first += signX;
+            }
+
+            if ( err2 < dX ) {
+                err += dX;
+                now_point.second += signY;
+            }
+        }
+    }
+
+    void lineWu( std::pair<int32_t, int32_t> start,
+                 std::pair<int32_t, int32_t> end ) {
+        float dx = end.first - start.first;
+        float dy = end.second - start.second;
+        float gradient, xend, yend, gap, inter;
+        int32_t xpxl1, ypxl1, xpxl2, ypxl2, i;
+
+        if ( fabs( dx ) > fabs( dy ) ) {
+            if ( end.first < start.first ) {
+                std::swap( start, end );
+            }
+
+            gradient = dy / dx;
+            xend = std::round( start.first );
+            yend = start.second + gradient * ( xend - start.first );
+            gap = 1 - fpart( start.first + 0.5f );
+            xpxl1 = xend;
+            ypxl1 = ipart( yend );
+            putPixelBr( xpxl1, ypxl1, ( 1.0f - fpart( yend ) ) * gap );
+            putPixelBr( xpxl1, ypxl1 + 1, fpart( yend ) * gap );
+            inter = yend + gradient;
+
+            xend = std::round( end.first );
+            yend = end.second + gradient * ( xend - end.first );
+            gap = fpart( end.first + 0.5f );
+            xpxl2 = xend;
+            ypxl2 = ipart( yend );
+            putPixelBr( xpxl2, ypxl2, ( 1.0f - fpart( yend ) ) * gap );
+            putPixelBr( xpxl2, ypxl2 + 1, fpart( yend ) * gap );
+
+            for ( i = xpxl1 + 1; i < xpxl2 - 1; i++ ) {
+                putPixelBr( i, ipart( inter ), 1.0f - fpart( inter ) );
+                putPixelBr( i, ipart( inter ) + 1, fpart( inter ) );
+                inter = inter + gradient;
+            }
+        } else {
+            if ( end.second < start.second ) {
+                std::swap( start, end );
+            }
+
+            gradient = dx / dy;
+            yend = std::round( start.second );
+            xend = start.first + gradient * ( yend - start.second );
+            gap = fpart( start.second + 0.5f );
+            ypxl1 = yend;
+            xpxl1 = ipart( xend );
+            putPixelBr( xpxl1, ypxl1, 1.0f - fpart( xend ) * gap );
+            putPixelBr( xpxl1 + 1, ypxl1, fpart( xend ) * gap );
+            inter = xend + gradient;
+
+            yend = std::round( end.second );
+            xend = end.first + gradient * ( yend - end.second );
+            gap = fpart( end.second + 0.5 );
+            ypxl2 = yend;
+            xpxl2 = ipart( xend );
+            putPixelBr( xpxl2, ypxl2, 1.0f - fpart( xend ) * gap );
+            putPixelBr( xpxl2 + 1, ypxl2, fpart( xend ) * gap );
+
+            for ( i = ypxl1 + 1; i < ypxl2; i++ ) {
+                putPixelBr( ipart( inter ), i, 1.0f - fpart( inter ) );
+                putPixelBr( ipart( inter ) + 1, i, fpart( inter ) );
+                inter += gradient;
+            }
+        }
+    }
+
+    void lineDDA( std::pair<int32_t, int32_t> start,
+                  std::pair<int32_t, int32_t> end ) {
+        int32_t dx = end.first - start.first;
+        int32_t dy = end.second - start.second;
+        int32_t steps =
+            std::abs( dx ) > std::abs( dy ) ? std::abs( dx ) : std::abs( dy );
+
+        float Xinc = dx / (float)steps;
+        float Yinc = dy / (float)steps;
+
+        auto X = (float)start.first;
+        auto Y = (float)start.second;
+
+        for ( int i = 0; i <= steps; i++ ) {
+            putPixel( X, Y );
+            X += Xinc;
+            Y += Yinc;
+        }
+    }
+
+    void circleBrasenham( std::pair<int32_t, int32_t> center, int32_t rd ) {
+        int32_t x = 0;
+        int32_t y = rd;
+        int32_t delta = 1 - 2 * rd;
+        int error = 0;
+
+        while ( y >= 0 ) {
+            putPixel( center.first + x, center.second + y );
+            putPixel( center.first + x, center.second - y );
+            putPixel( center.first - x, center.second + y );
+            putPixel( center.first - x, center.second - y );
+
+            error = 2 * ( delta + y ) - 1;
+
+            if ( ( delta < 0 ) && ( error <= 0 ) ) {
+                delta += 2 * ++x + 1;
+                continue;
+            }
+
+            if ( ( delta > 0 ) && ( error > 0 ) ) {
+                delta -= 2 * --y + 1;
+                continue;
+            }
+
+            delta += 2 * ( ++x - --y );
+        }
     }
 
 private:
