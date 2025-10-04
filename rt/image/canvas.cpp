@@ -23,19 +23,8 @@ float fpart( float a ) {
 }
 
 export struct Canvas final : Image {
-    Canvas( int32_t width, int32_t height ) {
-        height_ = height;
-        width_ = width;
-
-        // NOTE: RGB
-        bpp_ = 24;
-
-        data_ = new char[width_ * height_ * ( bpp_ / 8 )];
-
-        // Default canvas color.
-        std::fill( data_, data_ + width_ * height_ * ( bpp_ / 8 ), 0 );
-        // std::memset(data, 128, width_*height_*bpp_);
-    }
+    Canvas( int32_t width, int32_t height )
+        : Image{ width, height } {}
 
     auto setPenSize( int32_t size ) -> void {
         //

@@ -1,5 +1,6 @@
 module;
 
+#include <iostream>
 #include <print>
 #include <string>
 #include <filesystem>
@@ -52,7 +53,18 @@ export struct Image {
     };
 
 protected:
-    Image();
+    Image( int32_t width, int32_t height ) {
+        height_ = height;
+        width_ = width;
+
+        // NOTE: RGB
+        bpp_ = 24;
+
+        data_ = new char[width_ * height_ * ( bpp_ / 8 )];
+
+        // Default canvas color.
+        std::fill( data_, data_ + width_ * height_ * ( bpp_ / 8 ), 0 );
+    };
 
 protected:
     int bpp_;
