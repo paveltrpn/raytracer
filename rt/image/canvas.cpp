@@ -35,7 +35,7 @@ export struct Canvas final : Image {
         penColorR_ = r;
         penColorG_ = g;
         penColorB_ = b;
-        penColorB_ = a;
+        penColorA_ = a;
     }
 
     auto putPixel( int32_t x, int32_t y ) -> void {

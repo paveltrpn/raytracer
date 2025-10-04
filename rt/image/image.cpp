@@ -4,28 +4,29 @@ module;
 #include <print>
 #include <string>
 #include <filesystem>
+#include <fstream>
 
 export module image:image;
 
 namespace tire {
 
 export struct Image {
-    auto bpp() -> int {
+    auto bpp() const -> int {
         //
         return bpp_;
     };
 
-    auto width() -> int {
+    auto width() const -> int {
         //
         return width_;
     };
 
-    auto height() -> int {
+    auto height() const -> int {
         //
         return height_;
     };
 
-    auto data() -> char* {
+    auto data() const -> uint8_t* {
         //
         return data_;
     };
@@ -34,7 +35,7 @@ export struct Image {
      * @brief Base class exports as simple PPM format encoded
      * as base64 string.
      */
-    virtual auto asBase64() -> std::string {
+    virtual auto asBase64() const -> std::string {
         //
         return {};
     }
@@ -42,9 +43,30 @@ export struct Image {
     /**
      * @brief Base class exports as simple PPM format.
      */
-    virtual auto write( const std::string& path ) -> void {
-        //
-        //
+    virtual auto writeToFile( const std::string& path ) const -> void {
+        const auto filePath = std::filesystem::path{ path };
+
+        if ( std::filesystem::exists( filePath ) ) {
+            std::println( "trying to overwrite existing file \"{}\"",
+                          filePath.filename().string() );
+        }
+
+        // Open file - this will create it if it doesn't exist
+        // and truncate it if it does exist
+        std::ofstream file( filePath.string(), std::ios::trunc );
+
+        file << "P3\n" << width_ << ' ' << height_ << "\n255\n";
+
+        const auto offst = bpp_ / 8;
+
+        for ( int j = 0; j < width_ * height_; j++ ) {
+            size_t base = j * 3;
+            const auto ir = static_cast<int>( data_[base + 0] );
+            const auto ig = static_cast<int>( data_[base + 1] );
+            const auto ib = static_cast<int>( data_[base + 2] );
+
+            file << ir << ' ' << ig << ' ' << ib << '\n';
+        }
     }
 
     virtual ~Image() {
@@ -60,17 +82,19 @@ protected:
         // NOTE: RGB
         bpp_ = 24;
 
-        data_ = new char[width_ * height_ * ( bpp_ / 8 )];
+        const auto offst = bpp_ / 8;
+
+        data_ = new uint8_t[width_ * height_ * offst];
 
         // Default canvas color.
-        std::fill( data_, data_ + width_ * height_ * ( bpp_ / 8 ), 0 );
+        std::fill( data_, data_ + width_ * height_ * offst, 0 );
     };
 
 protected:
     int bpp_;
     int width_;
     int height_;
-    char* data_;
+    uint8_t* data_;
 };
 
 }  // namespace tire
