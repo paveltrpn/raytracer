@@ -57,11 +57,14 @@ export struct Image {
         // and truncate it if it does exist
         std::ofstream file( filePath.string(), std::ios::trunc );
 
-        const auto offst = bpp_ / 8;
+        const auto components = bpp_ / 8;
 
+        // Write header.
         file << "P3\n" << width_ << ' ' << height_ << "\n255\n";
+
+        // Write body.
         for ( int j = 0; j < width_ * height_; j++ ) {
-            size_t base = j * 3;
+            size_t base = j * components;
             const auto ir = static_cast<int>( data_[base + 0] );
             const auto ig = static_cast<int>( data_[base + 1] );
             const auto ib = static_cast<int>( data_[base + 2] );
@@ -83,15 +86,16 @@ protected:
         // NOTE: RGB
         bpp_ = 24;
 
-        const auto offst = bpp_ / 8;
+        const auto components = bpp_ / 8;
 
-        data_ = new uint8_t[width_ * height_ * offst];
+        data_ = new uint8_t[width_ * height_ * components];
 
-        // Default canvas color.
-        // std::fill( data_, data_ + width_ * height_ * offst, 0 );
+        // Zeroed canvas color.
+        // std::fill( data_, data_ + width_ * height_ * components, 0 );
 
+        // Fill with providede default color.
         for ( int j = 0; j < width_ * height_; j++ ) {
-            size_t base = j * 3;
+            size_t base = j * components;
             data_[base + 0] = dc.r();
             data_[base + 1] = dc.g();
             data_[base + 2] = dc.b();

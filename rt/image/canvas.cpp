@@ -50,11 +50,14 @@ export struct Canvas final : Image {
             return;
         }
 
-        const auto offst = bpp_ / 8;
+        const auto components = bpp_ / 8;
 
-        data_[( ( x * offst ) * height_ + y * offst ) + 0] = penColorR_;
-        data_[( ( x * offst ) * height_ + y * offst ) + 1] = penColorG_;
-        data_[( ( x * offst ) * height_ + y * offst ) + 2] = penColorB_;
+        data_[( ( x * components ) * height_ + y * components ) + 0] =
+            penColorR_;
+        data_[( ( x * components ) * height_ + y * components ) + 1] =
+            penColorG_;
+        data_[( ( x * components ) * height_ + y * components ) + 2] =
+            penColorB_;
     }
 
     auto putPixelBr( int32_t x, int32_t y, float br ) -> void {
@@ -62,13 +65,13 @@ export struct Canvas final : Image {
             return;
         }
 
-        const auto offst = bpp_ / 8;
+        const auto components = bpp_ / 8;
 
-        data_[( ( x * offst ) * height_ + y * offst ) + 0] =
+        data_[( ( x * components ) * height_ + y * components ) + 0] =
             uint8_t( std::ceil( penColorR_ * br ) );
-        data_[( ( x * offst ) * height_ + y * offst ) + 1] =
+        data_[( ( x * components ) * height_ + y * components ) + 1] =
             uint8_t( std::ceil( penColorG_ * br ) );
-        data_[( ( x * offst ) * height_ + y * offst ) + 2] =
+        data_[( ( x * components ) * height_ + y * components ) + 2] =
             uint8_t( std::ceil( penColorB_ * br ) );
     }
 
