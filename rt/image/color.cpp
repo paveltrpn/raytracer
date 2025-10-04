@@ -100,7 +100,7 @@ concept ColorValue =
     (std::unsigned_integral<T> && std::is_same_v<T, uint8_t>) ||
     ( std::floating_point<T> && std::is_same_v<T, float> );
 
-template <ColorValue T>
+export template <ColorValue T>
 struct Color {
     using value_type = T;
     using char_type = uint8_t;
@@ -148,7 +148,7 @@ protected:
     value_type a_{};
 };
 
-struct Colorf final : Color<float> {
+export struct Colorf final : Color<float> {
     using value_type = Color<float>::value_type;
     using char_type = Color<float>::char_type;
 
@@ -185,7 +185,7 @@ struct Colorf final : Color<float> {
     };
 };
 
-struct Colori final : Color<uint8_t> {
+export struct Colori final : Color<uint8_t> {
     using value_type = Color<uint8_t>::value_type;
     using char_type = Color<uint8_t>::char_type;
 

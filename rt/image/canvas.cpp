@@ -6,14 +6,13 @@ module;
 export module image:canvas;
 
 import :image;
+import :color;
 
 namespace tire {
 
 int32_t ipart( float a ) {
     float rt = 0;
-
     std::modf( a, &rt );
-
     return int32_t( rt );
 }
 
@@ -23,8 +22,9 @@ float fpart( float a ) {
 }
 
 export struct Canvas final : Image {
-    Canvas( int32_t width, int32_t height )
-        : Image{ width, height } {}
+    Canvas( int32_t width, int32_t height,
+            const Colori& dc = Colori{ "skyblue" } )
+        : Image{ width, height, dc } {}
 
     auto setPenSize( int32_t size ) -> void {
         //
@@ -36,6 +36,13 @@ export struct Canvas final : Image {
         penColorG_ = g;
         penColorB_ = b;
         penColorA_ = a;
+    }
+
+    auto setPenColor( const Colori& color ) -> void {
+        penColorR_ = color.r();
+        penColorG_ = color.g();
+        penColorB_ = color.b();
+        penColorA_ = color.a();
     }
 
     auto putPixel( int32_t x, int32_t y ) -> void {

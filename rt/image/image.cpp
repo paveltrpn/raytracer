@@ -8,6 +8,8 @@ module;
 
 export module image:image;
 
+import :color;
+
 namespace tire {
 
 export struct Image {
@@ -74,7 +76,7 @@ export struct Image {
     };
 
 protected:
-    Image( int32_t width, int32_t height ) {
+    Image( int32_t width, int32_t height, const Colori& dc ) {
         height_ = height;
         width_ = width;
 
@@ -86,7 +88,14 @@ protected:
         data_ = new uint8_t[width_ * height_ * offst];
 
         // Default canvas color.
-        std::fill( data_, data_ + width_ * height_ * offst, 0 );
+        // std::fill( data_, data_ + width_ * height_ * offst, 0 );
+
+        for ( int j = 0; j < width_ * height_; j++ ) {
+            size_t base = j * 3;
+            data_[base + 0] = dc.r();
+            data_[base + 1] = dc.g();
+            data_[base + 2] = dc.b();
+        }
     };
 
 protected:
