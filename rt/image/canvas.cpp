@@ -109,7 +109,7 @@ export struct Canvas final : Image {
                  std::pair<int32_t, int32_t> end ) {
         const auto dx = end.first - start.first;
         const auto dy = end.second - start.second;
-        float gradient, xend, yend, gap, inter;
+        float xend, yend, gap, inter;
         int32_t xpxl1, ypxl1, xpxl2, ypxl2, i;
 
         if ( fabs( dx ) > fabs( dy ) ) {
@@ -117,7 +117,8 @@ export struct Canvas final : Image {
                 std::swap( start, end );
             }
 
-            gradient = dy / dx;
+            const auto gradient =
+                static_cast<float>( dy ) / static_cast<float>( dx );
             xend = std::round( start.first );
             yend = start.second + gradient * ( xend - start.first );
             gap = 1 - fpart( start.first + 0.5f );
@@ -145,7 +146,8 @@ export struct Canvas final : Image {
                 std::swap( start, end );
             }
 
-            gradient = dx / dy;
+            const auto gradient =
+                static_cast<float>( dx ) / static_cast<float>( dy );
             yend = std::round( start.second );
             xend = start.first + gradient * ( yend - start.second );
             gap = fpart( start.second + 0.5f );

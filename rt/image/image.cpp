@@ -55,10 +55,9 @@ export struct Image {
         // and truncate it if it does exist
         std::ofstream file( filePath.string(), std::ios::trunc );
 
-        file << "P3\n" << width_ << ' ' << height_ << "\n255\n";
-
         const auto offst = bpp_ / 8;
 
+        file << "P3\n" << width_ << ' ' << height_ << "\n255\n";
         for ( int j = 0; j < width_ * height_; j++ ) {
             size_t base = j * 3;
             const auto ir = static_cast<int>( data_[base + 0] );
