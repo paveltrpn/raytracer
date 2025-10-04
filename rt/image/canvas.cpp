@@ -34,7 +34,7 @@ export struct Canvas final : Image {
 
         // Default canvas color.
         std::fill( data_, data_ + width_ * height_ * ( bpp_ / 8 ), 0 );
-        // std::memset(data, 128, width_*height_*bpp);
+        // std::memset(data, 128, width_*height_*bpp_);
     }
 
     auto setPenSize( int32_t size ) -> void {
@@ -78,8 +78,8 @@ export struct Canvas final : Image {
 
     void lineBrasenham( std::pair<int32_t, int32_t> start,
                         std::pair<int32_t, int32_t> end ) {
-        int32_t dX = abs( end.first - start.first );
-        int32_t dY = abs( end.second - start.second );
+        const auto dX = abs( end.first - start.first );
+        const auto dY = abs( end.second - start.second );
         int32_t signX, signY;
         int32_t err2, err = dX - dY;
         std::pair<int32_t, int32_t> now_point = start;
@@ -118,8 +118,8 @@ export struct Canvas final : Image {
 
     void lineWu( std::pair<int32_t, int32_t> start,
                  std::pair<int32_t, int32_t> end ) {
-        float dx = end.first - start.first;
-        float dy = end.second - start.second;
+        const auto dx = end.first - start.first;
+        const auto dy = end.second - start.second;
         float gradient, xend, yend, gap, inter;
         int32_t xpxl1, ypxl1, xpxl2, ypxl2, i;
 
@@ -184,18 +184,18 @@ export struct Canvas final : Image {
 
     void lineDDA( std::pair<int32_t, int32_t> start,
                   std::pair<int32_t, int32_t> end ) {
-        int32_t dx = end.first - start.first;
-        int32_t dy = end.second - start.second;
-        int32_t steps =
+        auto dx = end.first - start.first;
+        auto dy = end.second - start.second;
+        auto steps =
             std::abs( dx ) > std::abs( dy ) ? std::abs( dx ) : std::abs( dy );
 
-        float Xinc = dx / (float)steps;
-        float Yinc = dy / (float)steps;
+        const auto Xinc = dx / static_cast<float>( steps );
+        const auto Yinc = dy / static_cast<float>( steps );
 
-        auto X = (float)start.first;
-        auto Y = (float)start.second;
+        auto X = static_cast<float>( start.first );
+        auto Y = static_cast<float>( start.second );
 
-        for ( int i = 0; i <= steps; i++ ) {
+        for ( size_t i{ 0 }; i <= steps; i++ ) {
             putPixel( X, Y );
             X += Xinc;
             Y += Yinc;
@@ -203,10 +203,10 @@ export struct Canvas final : Image {
     }
 
     void circleBrasenham( std::pair<int32_t, int32_t> center, int32_t rd ) {
-        int32_t x = 0;
-        int32_t y = rd;
-        int32_t delta = 1 - 2 * rd;
-        int error = 0;
+        auto x = 0;
+        auto y = rd;
+        auto delta = 1 - 2 * rd;
+        auto error = 0;
 
         while ( y >= 0 ) {
             putPixel( center.first + x, center.second + y );
