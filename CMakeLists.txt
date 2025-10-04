@@ -33,7 +33,9 @@ target_sources(image
   PUBLIC
     FILE_SET CXX_MODULES FILES
     rt/image/interface.cpp
+    rt/image/color.cpp
     rt/image/image.cpp
+    rt/image/canvas.cpp
 )
 target_link_libraries(image)
 

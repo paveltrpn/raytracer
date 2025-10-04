@@ -29,11 +29,18 @@ export struct Image {
         return data_;
     };
 
+    /**
+     * @brief Base class exports as simple PPM format encoded
+     * as base64 string.
+     */
     virtual auto asBase64() -> std::string {
         //
         return {};
     }
 
+    /**
+     * @brief Base class exports as simple PPM format.
+     */
     virtual auto write( const std::string& path ) -> void {
         //
         //
@@ -41,13 +48,13 @@ export struct Image {
 
     virtual ~Image() {
         //
-        delete data_;
+        delete[] data_;
     };
 
 protected:
     Image();
 
-private:
+protected:
     int bpp_;
     int width_;
     int height_;

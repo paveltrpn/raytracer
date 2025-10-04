@@ -27,21 +27,15 @@ public:
     int32_t get_width();
     int32_t get_height();
     int32_t get_bpp();
-    uint8_t *get_data();
+    uint8_t* get_data();
 
 private:
-    uint8_t *data;
+    uint8_t* data;
 
     int32_t cnvs_width;
     int32_t cnvs_height;
 
     static constexpr uint8_t bpp = 3;
-
-    int32_t pen_size = 1;
-
-    uint8_t pen_color_r = 255;
-    uint8_t pen_color_g = 255;
-    uint8_t pen_color_b = 255;
 
 #ifdef EXCLUDE
     int write_jpeg( std::string fname ) {
@@ -67,7 +61,7 @@ private:
                  */
         struct jpeg_error_mgr jerr;
         /* More stuff */
-        FILE *outfile;           /* target file */
+        FILE* outfile;           /* target file */
         JSAMPROW row_pointer[1]; /* pointer to JSAMPLE row[s] */
         int row_stride;          /* physical row width in image buffer */
 
@@ -162,7 +156,7 @@ private:
     }
 
     int write_tga( std::string fname ) {
-        TGA *tga_out;
+        TGA* tga_out;
         TGAData tga_data;
 
         std::memset( &tga_data, 0, sizeof( TGAData ) );
