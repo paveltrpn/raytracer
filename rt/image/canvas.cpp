@@ -1,5 +1,6 @@
 module;
 
+#include <utility>
 #include <iostream>
 #include <print>
 
@@ -15,18 +16,20 @@ export struct Canvas final : Image {
             const Colori& dc = Colori{ "skyblue" } )
         : Image{ width, height, dc } {}
 
-    Canvas( const Image& other )
-        : Image{} {
-        bpp_ = other.bpp();
-        width_ = other.width();
-        height_ = other.height();
+    explicit Canvas( const Image& other )
+        : Image{ other } {}
 
-        const auto components = bpp_ / 8;
+    explicit Canvas( Image&& other )
+        : Image{ std::move( other ) } {}
 
-        data_ = new uint8_t[width_ * height_ * components];
+    Canvas& operator=( const Image& other ) noexcept {
+        Canvas{ other }.swap( *this );
+        return *this;
+    }
 
-        std::copy( other.data(), other.data() + width_ * height_ * components,
-                   data_ );
+    Canvas& operator=( Image&& other ) noexcept {
+        Canvas{ std::move( other ) }.swap( *this );
+        return *this;
     }
 
     auto setPenSize( int32_t size ) -> void {
@@ -244,6 +247,15 @@ export struct Canvas final : Image {
 
             delta += 2 * ( ++x - --y );
         }
+    }
+
+private:
+    auto swap( Canvas& other ) noexcept -> void {
+        using std::swap;
+        swap( bpp_, other.bpp_ );
+        swap( width_, other.width_ );
+        swap( height_, other.height_ );
+        swap( data_, other.data_ );
     }
 
 private:

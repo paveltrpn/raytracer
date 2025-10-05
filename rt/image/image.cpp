@@ -92,6 +92,7 @@ export struct Image {
 
 protected:
     Image() = default;
+
     Image( int32_t width, int32_t height, const Colori& dc ) {
         height_ = height;
         width_ = width;
@@ -114,6 +115,45 @@ protected:
             data_[base + 2] = dc.b();
         }
     };
+
+    explicit Image( const Image& other ) {
+        bpp_ = other.bpp_;
+        width_ = other.width_;
+        height_ = other.height_;
+
+        const auto components = bpp_ / 8;
+
+        data_ = new uint8_t[width_ * height_ * components];
+
+        std::copy( other.data_, other.data_ + width_ * height_ * components,
+                   data_ );
+    }
+
+    explicit Image( Image&& other ) {
+        bpp_ = std::exchange( other.bpp_, 0 );
+        width_ = std::exchange( other.width_, 0 );
+        height_ = std::exchange( other.height_, 0 );
+        data_ = std::exchange( other.data_, nullptr );
+    }
+
+    Image& operator=( const Image& other ) noexcept {
+        Image{ other }.swap( *this );
+        return *this;
+    }
+
+    Image& operator=( Image&& other ) noexcept {
+        Image{ std::move( other ) }.swap( *this );
+        return *this;
+    }
+
+private:
+    auto swap( Image& other ) noexcept -> void {
+        using std::swap;
+        swap( bpp_, other.bpp_ );
+        swap( width_, other.width_ );
+        swap( height_, other.height_ );
+        swap( data_, other.data_ );
+    }
 
 protected:
     int bpp_{};
