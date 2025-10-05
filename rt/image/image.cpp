@@ -5,6 +5,7 @@ module;
 #include <string>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 
 export module image:image;
 
@@ -35,6 +36,28 @@ export struct Image {
         return data_;
     };
 
+    auto asPPM() const -> std::string {
+        auto stream = std::stringstream{};
+        const auto components = bpp_ / 8;
+
+        // Write header.
+        stream << "P3\n" << width_ << ' ' << height_ << "\n255\n";
+
+        // Write body.
+        for ( int j = 0; j < width_ * height_; j++ ) {
+            size_t base = j * components;
+            const auto ir = static_cast<int>( data_[base + 0] );
+            const auto ig = static_cast<int>( data_[base + 1] );
+            const auto ib = static_cast<int>( data_[base + 2] );
+
+            stream << ir << ' ' << ig << ' ' << ib << '\n';
+        }
+
+        stream.flush();
+
+        return stream.str();
+    }
+
     /**
      * @brief Base class exports as simple PPM format encoded
      * as base64 string.
@@ -55,24 +78,9 @@ export struct Image {
                           filePath.filename().string() );
         }
 
-        // Open file - this will create it if it doesn't exist
-        // and truncate it if it does exist
         std::ofstream file{ filePath.string(), std::ios::trunc };
 
-        const auto components = bpp_ / 8;
-
-        // Write header.
-        file << "P3\n" << width_ << ' ' << height_ << "\n255\n";
-
-        // Write body.
-        for ( int j = 0; j < width_ * height_; j++ ) {
-            size_t base = j * components;
-            const auto ir = static_cast<int>( data_[base + 0] );
-            const auto ig = static_cast<int>( data_[base + 1] );
-            const auto ib = static_cast<int>( data_[base + 2] );
-
-            file << ir << ' ' << ig << ' ' << ib << '\n';
-        }
+        file << asPPM();
 
         file.close();
     }
