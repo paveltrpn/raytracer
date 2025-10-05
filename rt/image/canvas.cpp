@@ -10,13 +10,13 @@ import :color;
 
 namespace tire {
 
-int32_t ipart( float a ) {
+auto ipart( float a ) -> int32_t {
     float rt = 0;
     std::modf( a, &rt );
     return int32_t( rt );
 }
 
-float fpart( float a ) {
+auto fpart( float a ) -> int32_t {
     float tmp = 0;
     return std::modf( a, &tmp );
 }
@@ -75,8 +75,8 @@ export struct Canvas final : Image {
             uint8_t( std::ceil( penColorB_ * br ) );
     }
 
-    void lineBrasenham( std::pair<int32_t, int32_t> start,
-                        std::pair<int32_t, int32_t> end ) {
+    auto lineBrasenham( std::pair<int32_t, int32_t> start,
+                        std::pair<int32_t, int32_t> end ) -> void {
         const auto dX = abs( end.first - start.first );
         const auto dY = abs( end.second - start.second );
         int32_t signX, signY;
@@ -115,8 +115,8 @@ export struct Canvas final : Image {
         }
     }
 
-    void lineWu( std::pair<int32_t, int32_t> start,
-                 std::pair<int32_t, int32_t> end ) {
+    auto lineWu( std::pair<int32_t, int32_t> start,
+                 std::pair<int32_t, int32_t> end ) -> void {
         const auto dx = end.first - start.first;
         const auto dy = end.second - start.second;
         float xend, yend, gap, inter;
@@ -183,8 +183,8 @@ export struct Canvas final : Image {
         }
     }
 
-    void lineDDA( std::pair<int32_t, int32_t> start,
-                  std::pair<int32_t, int32_t> end ) {
+    auto lineDDA( std::pair<int32_t, int32_t> start,
+                  std::pair<int32_t, int32_t> end ) -> void {
         auto dx = end.first - start.first;
         auto dy = end.second - start.second;
         auto steps =
@@ -203,7 +203,8 @@ export struct Canvas final : Image {
         }
     }
 
-    void circleBrasenham( std::pair<int32_t, int32_t> center, int32_t rd ) {
+    auto circleBrasenham( std::pair<int32_t, int32_t> center, int32_t rd )
+        -> void {
         auto x = 0;
         auto y = rd;
         auto delta = 1 - 2 * rd;

@@ -12,6 +12,8 @@ import :color;
 
 namespace tire {
 
+export enum IMAGE_DEPTH { RGB = 24, RGBA = 32 };
+
 export struct Image {
     auto bpp() const -> int {
         //
@@ -84,7 +86,7 @@ protected:
         width_ = width;
 
         // NOTE: RGB
-        bpp_ = 24;
+        bpp_ = IMAGE_DEPTH::RGB;
 
         const auto components = bpp_ / 8;
 
@@ -93,7 +95,7 @@ protected:
         // Zeroed canvas color.
         // std::fill( data_, data_ + width_ * height_ * components, 0 );
 
-        // Fill with providede default color.
+        // Fill with provided default color.
         for ( int j = 0; j < width_ * height_; j++ ) {
             size_t base = j * components;
             data_[base + 0] = dc.r();
