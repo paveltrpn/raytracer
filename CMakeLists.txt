@@ -28,15 +28,12 @@ target_link_libraries(network)
 # ================================
 # Module image
 # ================================
+file(GLOB MOD_IMAGE_SRC "rt/image/*.cpp")
 add_library(image)
 target_sources(image
   PUBLIC
     FILE_SET CXX_MODULES FILES
-    rt/image/interface.cpp
-    rt/image/color.cpp
-    rt/image/image.cpp
-    rt/image/canvas.cpp
-    rt/image/tga.cpp
+    ${MOD_IMAGE_SRC}
 )
 target_link_libraries(image)
 
