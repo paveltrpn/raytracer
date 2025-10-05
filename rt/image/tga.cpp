@@ -8,6 +8,7 @@ module;
 #include <fstream>
 
 export module image:tga;
+import :image;
 
 namespace tire {
 
@@ -60,7 +61,7 @@ struct STGAHeader {
     uint8_t descriptor;
 };
 
-struct Tga {
+export struct Tga final : Image {
     Tga( std::string_view fname ) {
         uint8_t color[4] = { 0, 0, 0, 0 };
         uint8_t blockInfo{}, isPacked{};
@@ -68,16 +69,56 @@ struct Tga {
         size_t i{}, k{};
 
         // Open file.
-        openFile( fname );
+        std::ifstream _fileStream;
+        _fileStream.open( fname, std::ifstream::binary );
+        if ( !_fileStream ) {
+            throw std::runtime_error( std::format( "tga file \"{}\" not found",
+                                                   std::string{ fname } ) );
+        }
 
         // Read header.
-        readHeader();
+        std::array<std::byte, TGA_HEADER_SIZE> header{};
+        _fileStream.read( reinterpret_cast<char*>( &header ), TGA_HEADER_SIZE );
+        _header.identsize = static_cast<uint8_t>( header[0] );
+        _header.colorMapType = static_cast<uint8_t>( header[1] );
+        _header.imageType = static_cast<uint8_t>( header[2] );
+        _header.colorMapStart = static_cast<uint8_t>( header[3] ) +
+                                static_cast<uint16_t>( header[4] ) * 256;
+        _header.colorMapLength = static_cast<uint8_t>( header[5] ) +
+                                 static_cast<uint16_t>( header[6] ) * 256;
+        _header.colorMapBits = static_cast<uint8_t>( header[7] );
+        _header.xstart = static_cast<uint8_t>( header[8] ) +
+                         static_cast<uint16_t>( header[9] ) * 256;
+        _header.ystart = static_cast<uint8_t>( header[10] ) +
+                         static_cast<uint16_t>( header[11] ) * 256;
+        _header.width = static_cast<uint8_t>( header[12] ) +
+                        static_cast<uint16_t>( header[13] ) * 256;
+        _header.height = static_cast<uint8_t>( header[14] ) +
+                         static_cast<uint16_t>( header[15] ) * 256;
+        _header.bits = static_cast<uint8_t>( header[16] );
+        _header.descriptor = static_cast<uint8_t>( header[7] );
+
+        if ( ( _header.bits != 24 ) && ( _header.bits != 32 ) ) {
+            throw std::runtime_error( std::format(
+                "error read tga file it must be RGB or RGBA but have {} bpp!",
+                _header.bits ) );
+        }
+
+        if ( _header.imageType == TGA_IMGTYPE_BW_FLAG ) {
+            std::println( "TGA === note that image is grayscale!" );
+        }
+
+        // Read file body.
+
+        bpp_ = _header.bits;
+        width_ = _header.width;
+        height_ = _header.height;
 
         const auto channels = _header.bits / 8;
 
-        _decompressed = new uint8_t[_header.width * _header.height * channels];
+        data_ = new uint8_t[_header.width * _header.height * channels];
 
-        auto getByte = [this, channels]( uint8_t* c ) {
+        auto getByte = [&_fileStream, channels]( uint8_t* c ) {
             // channels can be == 3 or 4. Hence we read 4 bytes in 4-bytes array
             // or read 3 bytes and leave 4-th byte unused.
             _fileStream.read( reinterpret_cast<char*>( c ), channels );
@@ -86,12 +127,12 @@ struct Tga {
         auto setByte = [this, channels]( size_t i, uint8_t c[4] ) {
             // TGA store pixel as BGR, write it to decompressed
             // array as RGB.
-            _decompressed[i * channels + 0] = c[2];
-            _decompressed[i * channels + 1] = c[1];
-            _decompressed[i * channels + 2] = c[0];
+            data_[i * channels + 0] = c[2];
+            data_[i * channels + 1] = c[1];
+            data_[i * channels + 2] = c[0];
 
             if ( channels == 4 ) {
-                _decompressed[i * channels + 3] = c[3];
+                data_[i * channels + 3] = c[3];
             }
         };
 
@@ -133,81 +174,8 @@ struct Tga {
         _fileStream.close();
     }
 
-    ~Tga() {
-        //
-        delete[] _decompressed;
-    }
-
-    auto width() const -> size_t {
-        //
-        return _header.width;
-    }
-
-    auto height() const -> size_t {
-        //
-        return _header.height;
-    };
-
-    auto channels() const -> size_t {
-        //
-        return _header.bits / 8;
-    };
-
-    auto data() const -> uint8_t* {
-        //
-        return _decompressed;
-    }
-
-private:
-    auto openFile( std::string_view fname ) -> void {
-        _fileStream.open( fname, std::ifstream::binary );
-        if ( !_fileStream ) {
-            throw std::runtime_error( std::format( "tga file \"{}\" not found",
-                                                   std::string{ fname } ) );
-        }
-    }
-
-    auto readHeader() -> void {
-        // Zeroed
-        std::array<std::byte, TGA_HEADER_SIZE> header{};
-
-        _fileStream.read( reinterpret_cast<char*>( &header ), TGA_HEADER_SIZE );
-
-        _header.identsize = static_cast<uint8_t>( header[0] );
-        _header.colorMapType = static_cast<uint8_t>( header[1] );
-        _header.imageType = static_cast<uint8_t>( header[2] );
-        _header.colorMapStart = static_cast<uint8_t>( header[3] ) +
-                                static_cast<uint16_t>( header[4] ) * 256;
-        _header.colorMapLength = static_cast<uint8_t>( header[5] ) +
-                                 static_cast<uint16_t>( header[6] ) * 256;
-        _header.colorMapBits = static_cast<uint8_t>( header[7] );
-        _header.xstart = static_cast<uint8_t>( header[8] ) +
-                         static_cast<uint16_t>( header[9] ) * 256;
-        _header.ystart = static_cast<uint8_t>( header[10] ) +
-                         static_cast<uint16_t>( header[11] ) * 256;
-        _header.width = static_cast<uint8_t>( header[12] ) +
-                        static_cast<uint16_t>( header[13] ) * 256;
-        _header.height = static_cast<uint8_t>( header[14] ) +
-                         static_cast<uint16_t>( header[15] ) * 256;
-        _header.bits = static_cast<uint8_t>( header[16] );
-        _header.descriptor = static_cast<uint8_t>( header[7] );
-
-        if ( ( _header.bits != 24 ) && ( _header.bits != 32 ) ) {
-            throw std::runtime_error( std::format(
-                "error read tga file it must be RGB or RGBA but have {} bpp!",
-                _header.bits ) );
-        }
-
-        if ( _header.imageType == TGA_IMGTYPE_BW_FLAG ) {
-            std::println( "TGA === note that image is grayscale!" );
-        }
-    }
-
 private:
     STGAHeader _header{};
-    uint8_t* _decompressed{ nullptr };
-
-    std::ifstream _fileStream;
 };
 
 }  // namespace tire

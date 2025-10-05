@@ -26,6 +26,20 @@ export struct Canvas final : Image {
             const Colori& dc = Colori{ "skyblue" } )
         : Image{ width, height, dc } {}
 
+    Canvas( const Image& other )
+        : Image{} {
+        bpp_ = other.bpp();
+        width_ = other.width();
+        height_ = other.height();
+
+        const auto components = bpp_ / 8;
+
+        data_ = new uint8_t[width_ * height_ * components];
+
+        std::copy( other.data(), other.data() + width_ * height_ * components,
+                   data_ );
+    }
+
     auto setPenSize( int32_t size ) -> void {
         //
         penSize_ = size;

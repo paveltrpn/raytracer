@@ -12,7 +12,7 @@ import :color;
 
 namespace tire {
 
-export enum IMAGE_DEPTH { RGB = 24, RGBA = 32 };
+export enum class IMAGE_DEPTH { RGB = 24, RGBA = 32 };
 
 export struct Image {
     auto bpp() const -> int {
@@ -57,7 +57,7 @@ export struct Image {
 
         // Open file - this will create it if it doesn't exist
         // and truncate it if it does exist
-        std::ofstream file( filePath.string(), std::ios::trunc );
+        std::ofstream file{ filePath.string(), std::ios::trunc };
 
         const auto components = bpp_ / 8;
 
@@ -73,6 +73,8 @@ export struct Image {
 
             file << ir << ' ' << ig << ' ' << ib << '\n';
         }
+
+        file.close();
     }
 
     virtual ~Image() {
@@ -81,12 +83,13 @@ export struct Image {
     };
 
 protected:
+    Image() = default;
     Image( int32_t width, int32_t height, const Colori& dc ) {
         height_ = height;
         width_ = width;
 
         // NOTE: RGB
-        bpp_ = IMAGE_DEPTH::RGB;
+        bpp_ = static_cast<decltype( bpp_ )>( IMAGE_DEPTH::RGB );
 
         const auto components = bpp_ / 8;
 
@@ -105,10 +108,10 @@ protected:
     };
 
 protected:
-    int bpp_;
-    int width_;
-    int height_;
-    uint8_t* data_;
+    int bpp_{};
+    int width_{};
+    int height_{};
+    uint8_t* data_{};
 };
 
 }  // namespace tire
