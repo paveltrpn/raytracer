@@ -10,17 +10,6 @@ import :color;
 
 namespace tire {
 
-auto ipart( float a ) -> int32_t {
-    float rt = 0;
-    std::modf( a, &rt );
-    return int32_t( rt );
-}
-
-auto fpart( float a ) -> int32_t {
-    float tmp = 0;
-    return std::modf( a, &tmp );
-}
-
 export struct Canvas final : Image {
     Canvas( int32_t width, int32_t height,
             const Colori& dc = Colori{ "skyblue" } )
@@ -135,6 +124,17 @@ export struct Canvas final : Image {
         const auto dy = end.second - start.second;
         float xend, yend, gap, inter;
         int32_t xpxl1, ypxl1, xpxl2, ypxl2, i;
+
+        auto ipart = []( float a ) -> int32_t {
+            float rt = 0;
+            std::modf( a, &rt );
+            return int32_t( rt );
+        };
+
+        auto fpart = []( float a ) -> int32_t {
+            float tmp = 0;
+            return std::modf( a, &tmp );
+        };
 
         if ( fabs( dx ) > fabs( dy ) ) {
             if ( end.first < start.first ) {
