@@ -1,8 +1,7 @@
 module;
 
 #include <utility>
-#include <iostream>
-#include <print>
+#include <cmath>
 
 export module image:canvas;
 
@@ -22,12 +21,12 @@ export struct Canvas final : Image {
     explicit Canvas( Image&& other )
         : Image{ std::move( other ) } {}
 
-    Canvas& operator=( const Image& other ) noexcept {
+    auto operator=( const Image& other ) noexcept -> Canvas& {
         Canvas{ other }.swap( *this );
         return *this;
     }
 
-    Canvas& operator=( Image&& other ) noexcept {
+    auto operator=( Image&& other ) noexcept -> Canvas& {
         Canvas{ std::move( other ) }.swap( *this );
         return *this;
     }

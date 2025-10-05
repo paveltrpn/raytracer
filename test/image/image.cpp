@@ -1,8 +1,10 @@
 #include <exception>
-#include <iostream>
 #include <print>
 
 import image;
+
+void foo() {
+}
 
 int main( int argc, char** argv ) {
     std::println( "IMAGE TEST" );

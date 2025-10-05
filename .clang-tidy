@@ -31,7 +31,7 @@ Checks: >
 # -modernize-use-trailing-return-type,
   -modernize-use-constraints,
   -modernize-type-traits,
-  -modernize-macro-to-enum,
+# -modernize-macro-to-enum,
   -modernize-use-designated-initializers,
 # -misc-use-anonymous-namespace,
-  -modernize-avoid-c-arrays,
+  -modernize-avoid-c-arrays
