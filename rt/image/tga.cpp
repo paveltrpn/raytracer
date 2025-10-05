@@ -4,7 +4,6 @@ module;
 #include <format>
 #include <print>
 #include <string>
-#include <filesystem>
 #include <fstream>
 
 export module image:tga;
@@ -105,7 +104,7 @@ export struct Tga final : Image {
         }
 
         if ( _header.imageType == TGA_IMGTYPE_BW_FLAG ) {
-            std::println( "TGA === note that image is grayscale!" );
+            std::println( "note that tga image is grayscale!" );
         }
 
         // Read file body.
