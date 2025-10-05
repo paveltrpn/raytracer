@@ -36,6 +36,7 @@ target_sources(image
     rt/image/color.cpp
     rt/image/image.cpp
     rt/image/canvas.cpp
+    rt/image/tga.cpp
 )
 target_link_libraries(image)
 
