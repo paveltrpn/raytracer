@@ -114,13 +114,13 @@ struct Color {
 
     virtual ~Color() = default;
 
-    [[nodiscard]] value_type r() const { return r_; };
-    [[nodiscard]] value_type g() const { return g_; };
-    [[nodiscard]] value_type b() const { return b_; };
-    [[nodiscard]] value_type a() const { return a_; };
+    [[nodiscard]] auto r() const -> value_type { return r_; };
+    [[nodiscard]] auto g() const -> value_type { return g_; };
+    [[nodiscard]] auto b() const -> value_type { return b_; };
+    [[nodiscard]] auto a() const -> value_type { return a_; };
 
 protected:
-    std::array<char_type, 4> charFromHex( std::string_view letters ) {
+    auto charFromHex( std::string_view letters ) -> std::array<char_type, 4> {
         std::array<char_type, 4> ret{ 255, 255, 255, 255 };
         const auto length = letters.length();
         size_t l{};
