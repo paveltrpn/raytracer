@@ -4,7 +4,7 @@ import { RenderWGL } from "./render/render.js";
 /**
  * @brief - Entry point.
  */
-async function main() {
+async function main(): Promise<void> {
     // After this call global "gl" handle becomes valid!
     await initWebGLContext();
 

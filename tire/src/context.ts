@@ -3,7 +3,7 @@
  */
 export let gl = null;
 
-export async function initWebGLContext() {
+export async function initWebGLContext(): Promise<void>{
     const canvasId = "#glcanvas";
     const textField = "log_out";
 
