@@ -1,5 +1,9 @@
+
 export class vec4 {
-    data;
-    order = 3;
-    constructor() {}
+	data: Float32Array;
+	private readonly order: number = 3;
+
+	constructor() {
+
+    }
 }

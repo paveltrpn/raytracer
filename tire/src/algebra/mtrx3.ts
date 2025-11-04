@@ -1,5 +1,9 @@
+
 export class mtrx3 {
-    data;
-    order = 4;
-    constructor() {}
+    data: Float32Array;
+    private readonly order: number = 4;
+
+    constructor() {
+
+    }
 }

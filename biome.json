@@ -22,6 +22,8 @@
       "correctness": {
         "noUnsafeOptionalChaining": "off",
         "noUnusedVariables": {
+          "options": {
+          },
           "level": "error",
           "fix": "none"
         }
@@ -31,17 +33,48 @@
       },
       "style": {
         "useConst": {
+          "options": {
+          },
           "level": "warn",
           "fix": "unsafe"
         },
         "useTemplate": {
+          "options": {
+          },
           "level": "warn",
           "fix": "safe"
         },
         "useNamingConvention": {
           "level": "error",
           "options": {
-            "strictCase": false
+            "strictCase": false,
+            "conventions": [
+              {
+                "selector": {
+                  "kind": "classMember"
+                },
+                "formats": [
+                  "camelCase"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "class"
+                },
+                "formats": [
+                  "camelCase"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "classProperty"
+                },
+                "formats": [
+                  "camelCase",
+                  "CONSTANT_CASE"
+                ]
+              }
+            ]
           }
         }
       }

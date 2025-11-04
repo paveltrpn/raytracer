@@ -1,5 +1,9 @@
+
 export class mtrx2 {
-    data;
-    order = 2;
-    constructor() {}
+    data: Float32Array;
+    private readonly order: number = 2;
+
+    constructor() {
+
+    }
 }
