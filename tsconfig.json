@@ -6,7 +6,7 @@
         "rootDir": "./tire/src"
     },
     "include": ["./tire/src/**/*"],
-    "exclude": ["./node_modules", "./tire/js", "./server", "./test"],
+    "exclude": ["node_modules", "./tire/js", "./server", "./test"],
     "allowJs": true,
     "allowImportingTsExtensions": true
 }

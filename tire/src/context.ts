@@ -4,17 +4,17 @@
 export let gl = null;
 
 export async function initWebGLContext() {
-    const canvas_id = "#glcanvas";
-    const text_field = "log_out";
+    const canvasId = "#glcanvas";
+    const textField = "log_out";
 
-    let html_canvas = document.querySelector(canvas_id);
+    const htmlCanvas = <HTMLCanvasElement>document.querySelector(canvasId);
 
-    document.getElementById("fetch_test").addEventListener("click", function () {
+    document.getElementById("fetch_test").addEventListener("click", () => {
         console.log(" === ");
         alert("Button clicked!");
     });
 
-    gl = html_canvas.getContext("webgl2", {
+    gl = htmlCanvas.getContext("webgl2", {
         antialias: true,
         depth: true,
     });
@@ -26,9 +26,9 @@ export async function initWebGLContext() {
         return;
     }
 
-    let log_out = document.getElementById(text_field);
+    const logOut = document.getElementById(textField);
 
-    log_out.innerText =
+    let accumulatedText: string =
         gl.getParameter(gl.VERSION) +
         "\n " +
         gl.getParameter(gl.SHADING_LANGUAGE_VERSION) +
@@ -39,6 +39,7 @@ export async function initWebGLContext() {
     const glExtString = gl.getSupportedExtensions();
 
     for (let i = 0; i < glExtString.length; i++) {
-        log_out.innerText = log_out.innerText + glExtString[i] + "\n";
+        accumulatedText += `${glExtString[i]}\n`;
     }
+    logOut.innerText = accumulatedText;
 }
