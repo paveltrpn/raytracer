@@ -17,13 +17,11 @@ export class mtrx4 {
             this.data = new Float32Array(16);
             this.fromArray(src);
         } else {
-            let i, j: number;
-
             this.data = new Float32Array(16);
 
-            for (i = 0; i < this.order; i++) {
-                for (j = 0; j < this.order; j++) {
-                    if (i == j) {
+            for (let i = 0; i < this.order; i++) {
+                for (let j = 0; j < this.order; j++) {
+                    if (i === j) {
                         this.data[idRw(i, j, this.order)] = 1.0;
                     } else {
                         this.data[idRw(i, j, this.order)] = 0.0;
@@ -58,20 +56,18 @@ export class mtrx4 {
     }
 
     fromQtnn(src: qtnn) {
-        let wx, wy, wz, xx, yy, yz, xy, xz, zz, x2, y2, z2: number;
-
-        x2 = src.data[0] + src.data[0];
-        y2 = src.data[1] + src.data[1];
-        z2 = src.data[2] + src.data[2];
-        xx = src.data[0] * x2;
-        xy = src.data[0] * y2;
-        xz = src.data[0] * z2;
-        yy = src.data[1] * y2;
-        yz = src.data[1] * z2;
-        zz = src.data[2] * z2;
-        wx = src.data[3] * x2;
-        wy = src.data[3] * y2;
-        wz = src.data[3] * z2;
+        const x2 = src.data[0] + src.data[0];
+        const y2 = src.data[1] + src.data[1];
+        const z2 = src.data[2] + src.data[2];
+        const xx = src.data[0] * x2;
+        const xy = src.data[0] * y2;
+        const xz = src.data[0] * z2;
+        const yy = src.data[1] * y2;
+        const yz = src.data[1] * z2;
+        const zz = src.data[2] * z2;
+        const wx = src.data[3] * x2;
+        const wy = src.data[3] * y2;
+        const wz = src.data[3] * z2;
 
         this.data[0] = 1.0 - (yy + zz);
         this.data[1] = xy - wz;
@@ -93,14 +89,14 @@ export class mtrx4 {
     }
 
     mult(a: mtrx4) {
-        let i, j, k, tmp: number;
-        let rt: mtrx4 = new mtrx4();
+        let tmp: number;
+        const rt: mtrx4 = new mtrx4();
 
-        for (i = 0; i < this.order; i++) {
-            for (j = 0; j < this.order; j++) {
+        for (let i = 0; i < this.order; i++) {
+            for (let j = 0; j < this.order; j++) {
                 tmp = 0.0;
 
-                for (k = 0; k < this.order; k++) {
+                for (let k = 0; k < this.order; k++) {
                     tmp = tmp + this.data[idRw(k, j, this.order)] * a.data[idRw(i, k, this.order)];
                 }
 
@@ -149,8 +145,8 @@ export class mtrx4 {
     }
 
     invert() {
-        let inv: mtrx4 = new mtrx4();
-        let i, det: number;
+        const inv: mtrx4 = new mtrx4();
+        let det: number;
 
         inv.data[0] =
             this.data[5] * this.data[10] * this.data[15] -
@@ -293,11 +289,11 @@ export class mtrx4 {
 
         det = 1.0 / det;
 
-        for (i = 0; i < 16; i++) this.data[i] = inv.data[i] * det;
+        for (let i = 0; i < 16; i++) this.data[i] = inv.data[i] * det;
     }
 
     transpose() {
-        let tmp = new mtrx4();
+        const tmp = new mtrx4();
 
         tmp.data[0] = this.data[0];
         tmp.data[1] = this.data[4];
@@ -322,18 +318,17 @@ export class mtrx4 {
     }
 
     setAxisAngl(axis: vec3.vec3, phi: number) {
-        let cosphi, sinphi, vxvy, vxvz, vyvz, vx, vy, vz: number;
         let ax: vec3.vec3 = new vec3.vec3();
         ax = vec3.vec3Normalize(axis);
 
-        cosphi = Math.cos(phi);
-        sinphi = Math.sin(phi);
-        vxvy = ax.data[0] * ax.data[1];
-        vxvz = ax.data[0] * ax.data[2];
-        vyvz = ax.data[1] * ax.data[2];
-        vx = ax.data[0];
-        vy = ax.data[1];
-        vz = ax.data[2];
+        const cosphi = Math.cos(phi);
+        const sinphi = Math.sin(phi);
+        const vxvy = ax.data[0] * ax.data[1];
+        const vxvz = ax.data[0] * ax.data[2];
+        const vyvz = ax.data[1] * ax.data[2];
+        const vx = ax.data[0];
+        const vy = ax.data[1];
+        const vz = ax.data[2];
 
         this.data[0] = cosphi + (1.0 - cosphi) * vx * vx;
         this.data[1] = (1.0 - cosphi) * vxvy - sinphi * vz;
@@ -357,14 +352,12 @@ export class mtrx4 {
     }
 
     setEuler(yaw: number, pitch: number, roll: number) {
-        let cosy, siny, cosp, sinp, cosr, sinr: number;
-
-        cosy = Math.cos(yaw);
-        siny = Math.sin(yaw);
-        cosp = Math.cos(pitch);
-        sinp = Math.sin(pitch);
-        cosr = Math.cos(roll);
-        sinr = Math.sin(roll);
+        const cosy = Math.cos(yaw);
+        const siny = Math.sin(yaw);
+        const cosp = Math.cos(pitch);
+        const sinp = Math.sin(pitch);
+        const cosr = Math.cos(roll);
+        const sinr = Math.sin(roll);
 
         this.data[0] = cosy * cosr - siny * cosp * sinr;
         this.data[1] = -cosy * sinr - siny * cosp * cosr;
@@ -388,12 +381,9 @@ export class mtrx4 {
     }
 
     multTranslate(a: mtrx4, v: any) {
-        let x = v[0],
+        const x = v[0],
             y = v[1],
             z = v[2];
-        let a00, a01, a02, a03;
-        let a10, a11, a12, a13;
-        let a20, a21, a22, a23;
 
         if (a.data === this.data) {
             this.data[12] = a.data[0] * x + a.data[4] * y + a.data[8] * z + a.data[12];
@@ -401,18 +391,18 @@ export class mtrx4 {
             this.data[14] = a.data[2] * x + a.data[6] * y + a.data[10] * z + a.data[14];
             this.data[15] = a.data[3] * x + a.data[7] * y + a.data[11] * z + a.data[15];
         } else {
-            a00 = a.data[0];
-            a01 = a.data[1];
-            a02 = a.data[2];
-            a03 = a.data[3];
-            a10 = a.data[4];
-            a11 = a.data[5];
-            a12 = a.data[6];
-            a13 = a.data[7];
-            a20 = a.data[8];
-            a21 = a.data[9];
-            a22 = a.data[10];
-            a23 = a.data[11];
+            const a00 = a.data[0];
+            const a01 = a.data[1];
+            const a02 = a.data[2];
+            const a03 = a.data[3];
+            const a10 = a.data[4];
+            const a11 = a.data[5];
+            const a12 = a.data[6];
+            const a13 = a.data[7];
+            const a20 = a.data[8];
+            const a21 = a.data[9];
+            const a22 = a.data[10];
+            const a23 = a.data[11];
 
             this.data[0] = a00;
             this.data[1] = a01;
@@ -437,11 +427,11 @@ export class mtrx4 {
 
 export function mtrx4Transpose(m: mtrx4): mtrx4 {
     const mrange: number = 4;
-    let i, j, tmp: number;
-    let rt: mtrx4 = new mtrx4(m);
+    let tmp: number;
+    const rt: mtrx4 = new mtrx4(m);
 
-    for (i = 0; i < mrange; i++) {
-        for (j = 0; j < i; j++) {
+    for (let i = 0; i < mrange; i++) {
+        for (let j = 0; j < i; j++) {
             tmp = rt.data[idRw(i, i, mrange)];
             rt.data[idRw(i, j, mrange)] = rt.data[idRw(j, i, mrange)];
             rt.data[idRw(j, i, mrange)] = tmp;
@@ -453,14 +443,14 @@ export function mtrx4Transpose(m: mtrx4): mtrx4 {
 
 export function mtrx4Mult(a: mtrx4, b: mtrx4): mtrx4 {
     const mrange = 4;
-    let i, j, k, tmp: number;
-    let rt: mtrx4 = new mtrx4();
+    let  tmp: number;
+    const rt: mtrx4 = new mtrx4();
 
-    for (i = 0; i < mrange; i++) {
-        for (j = 0; j < mrange; j++) {
+    for (let i = 0; i < mrange; i++) {
+        for (let j = 0; j < mrange; j++) {
             tmp = 0.0;
 
-            for (k = 0; k < mrange; k++) {
+            for (let k = 0; k < mrange; k++) {
                 tmp = tmp + a.data[idRw(k, j, mrange)] * b.data[idRw(i, k, mrange)];
             }
 
