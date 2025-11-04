@@ -62,7 +62,8 @@
                   "kind": "class"
                 },
                 "formats": [
-                  "camelCase"
+                  "camelCase",
+                  "PascalCase"
                 ]
               },
               {

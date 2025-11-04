@@ -7,6 +7,23 @@ import * as gmtry from "./geometry.js";
  * @brief - Class manages all WebGL rendering related things.
  */
 export class RenderWGL {
+    width: number
+    height: number
+    aspect: number
+
+    prog: any
+
+    box: any
+
+    glVertBuf: any
+    glNormalBuf: any
+    glColorBuf: any
+
+    projectionMatrix: any
+
+    rot: any
+    rotTrans: any
+    
     constructor() {
         this.width = gl.drawingBufferWidth;
         this.height = gl.drawingBufferHeight;
@@ -24,24 +41,24 @@ export class RenderWGL {
 
         this.box = new gmtry.gmtryInstance_c();
         this.box.dummyInit();
-        this.gl_vert_buf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.gl_vert_buf);
+        this.glVertBuf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.glVertBuf);
         gl.bufferData(gl.ARRAY_BUFFER, this.box.vertices, gl.STATIC_DRAW);
 
         const vertexPosition = gl.getAttribLocation(this.prog.program, "aVertexPosition");
 
         gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(vertexPosition);
-        this.gl_normal_buf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.gl_normal_buf);
+        this.glNormalBuf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.glNormalBuf);
         gl.bufferData(gl.ARRAY_BUFFER, this.box.normals, gl.STATIC_DRAW);
 
         const vertexNormal = gl.getAttribLocation(this.prog.program, "aVertexNormal");
 
         gl.vertexAttribPointer(vertexNormal, 3, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(vertexNormal);
-        this.gl_color_buf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.gl_color_buf);
+        this.glColorBuf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.glColorBuf);
         gl.bufferData(gl.ARRAY_BUFFER, this.box.colors, gl.STATIC_DRAW);
 
         const vertexColor = gl.getAttribLocation(this.prog.program, "aVertexColor");
@@ -66,7 +83,7 @@ export class RenderWGL {
         this.rot = new alg.mtrx4();
         this.rot.fromQtnn(fooQtnn);
 
-        this.rot_trans = this.rot;
+        this.rotTrans = this.rot;
     }
 
     /**
@@ -106,10 +123,10 @@ export class RenderWGL {
         this.prog.use();
         this.prog.passMatrix4fv("uProjectionMatrix", this.projectionMatrix);
         this.box.applyMtrx4ToVerts(this.rot);
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.gl_vert_buf);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.glVertBuf);
         gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.box.vertices);
-        this.box.applyMtrx4ToNormals(this.rot_trans);
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.gl_normal_buf);
+        this.box.applyMtrx4ToNormals(this.rotTrans);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.glNormalBuf);
         gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.box.normals);
         gl.drawArrays(gl.TRIANGLES, 0, 36);
         requestAnimationFrame(this.loop.bind(this));

@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
-        "module": "ES2022",
-        "target": "ES2023",
+        "module": "nodenext",
+        "target": "es2024",
         "outDir": "./tire/js",
-        "rootDir": "./tire/src"
+        "rootDir": "./tire/src",
+        "moduleResolution": "nodenext"
     },
     "include": ["./tire/src/**/*"],
     "exclude": ["node_modules", "./tire/js", "./server", "./test"],
